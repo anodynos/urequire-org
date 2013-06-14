@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .container
+    .row-fluid
+      .span9.page
+        .hero-unit
+          h1.news-title= title
+          if locals.singlePost
+            span.post-date= "Posted on " + postDate
+            != content
+            include includes/disqus
+          else
+            each article in content
+              h2
+                a(href='/blog/' + article.url)= article.title
+                span.post-date= "Posted on " + article.postDate
+              != article.content
+      .span3
+        .well.sidebar-nav.news
+          ul.nav.nav-list
+            li.nav-header
+              i.icon-newspaper
+              span Blog
+            each article in articleList
+              li
+                a(href='/blog/' + article.url, class=locals.url == article.url && 'active')= article.title

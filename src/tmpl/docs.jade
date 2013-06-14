@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  .container(class=locals.pageSegment)
+    .row-fluid
+      .span9.page
+        .hero-unit
+          h1= title
+          != content
+      .span3
+        .well.sidebar-nav
+          if locals.sidebars
+            each sidebar in sidebars
+              ul.nav.nav-list
+                each link in sidebar
+                  if link.url
+                    if locals.rootSidebar
+                      li
+                        a(href='/' + link.url, class=locals.pageSegment == link.url && 'active')= link.name
+                    else
+                      li
+                        a(href='/' + page + '/' + link.url, class=locals.pageSegment == link.url && 'active')= link.name
+                  else
+                    li.nav-header
+                      if link.icon
+                        i(class=link.icon)
+                      span= link.name
+            include blocks/advertisements
