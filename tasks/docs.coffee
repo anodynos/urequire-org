@@ -39,8 +39,8 @@ module.exports = (grunt) ->
           cwd: base
         , ["*", "!Blog-*", "!*.js"])
         sidebars.push getSidebarSection "## Introduction", "icon-document-alt-stroke"
-        sidebars.push getSidebarSection "## Documentation"
-        sidebars.push getSidebarSection "## Declarative Injections"
+        sidebars.push getSidebarSection "## Module Authoring"
+        sidebars.push getSidebarSection "## Using & Configuration"
         sidebars.push getSidebarSection "## Conversion Templates"
         sidebars.push getSidebarSection "### Misc"
 
@@ -186,7 +186,7 @@ module.exports = (grunt) ->
       generateGuides()
 
       # urequire config docs - wiki articles that start with 'config.*'
-      generateConfigDocs()
+      # generateConfigDocs()
       done(true)
 
     done = @async()

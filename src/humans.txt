@@ -5,8 +5,6 @@
 
 	Agelos Pikoulas
 
-
-
 /* PROJECT */
 
     Source: https://github.com/anodynos/urequire
