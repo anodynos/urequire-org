@@ -13,13 +13,13 @@ module.exports = function (grunt) {
     app = express(),
     fs = require('fs'),
     Q = require('q'),
-    gruntPlugins = require('../grunt-plugins'),
+//    gruntPlugins = require('../grunt-plugins'),
     crypto = require('crypto');
 
   /**
    * Custom task to generate the plugins page
    */
-  grunt.registerTask('server', 'Start the Grunt Site Server', function () {
+  grunt.registerTask('server', 'Start the uRequire Site Server', function () {
     // keep the server task running
     this.async();
 
@@ -121,34 +121,6 @@ module.exports = function (grunt) {
       }
     });
 
-    // plugins route
-    app.get('/plugins*', function (req, res) {
-      res.sendfile('build/plugins.html');
-    });
-
-    // plugin list route
-    app.get('/plugin-list', function (req, res, next) {
-      // get the plugin list
-      pluginListEntity.then(function (entity) {
-        // Allow Cross-origin resource sharing
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader('ETag', entity.etag);
-        /*
-         // TODO: disabled for now.
-         if(req.headers['if-none-match'] === entity.etag) {
-         res.statusCode = 304;
-         res.end();
-         return;
-         }
-         */
-        res.statusCode = 200;
-        res.end(new Buffer(entity.json));
-      }).fail(function () {
-          next();
-        });
-    });
-
     // rss atom feed
     app.get('/rss', function (req, res) {
       res.setHeader('Content-Type', 'application/xml');
@@ -160,11 +132,6 @@ module.exports = function (grunt) {
     app.get('*', function (req, res, next) {
       req.url = req.url.toLowerCase();
       var filePath = 'build/docs/' + req.url + '.html';
-
-      if (req.url.indexOf('/grunt') === 0) {
-        res.redirect(301, '/api' + req.url);
-        return;
-      }
 
       fs.exists(filePath, function (exists) {
         if (exists) {
@@ -183,32 +150,32 @@ module.exports = function (grunt) {
     var UPDATE_INTERVAL_IN_SECONDS = 60 * 60;
     // pluginListEntity - promise {etag: '', json: ''}
     // using a promise so that clients can connect and wait for the initial entity
-    var pluginListEntity = getPluginListEntity();
+//    var pluginListEntity = getPluginListEntity();
 
 
-    function getPluginListEntity() {
-      var deferred = Q.defer();
-      gruntPlugins.fetchPluginList().then(
-        function (pluginList) {
-          var entity = {
-            json:JSON.stringify(pluginList)
-          };
-          var shasum = crypto.createHash('sha1');
-          shasum.update(entity.json);
-          entity.etag = shasum.digest('hex');
-          deferred.resolve(entity);
-          // update the entity
-          pluginListEntity = deferred.promise;
-        }).fail(function (e) {
-          deferred.reject(e);
-        });
-      return deferred.promise;
-    }
+//    function getPluginListEntity() {
+//      var deferred = Q.defer();
+//      gruntPlugins.fetchPluginList().then(
+//        function (pluginList) {
+//          var entity = {
+//            json:JSON.stringify(pluginList)
+//          };
+//          var shasum = crypto.createHash('sha1');
+//          shasum.update(entity.json);
+//          entity.etag = shasum.digest('hex');
+//          deferred.resolve(entity);
+//          // update the entity
+//          pluginListEntity = deferred.promise;
+//        }).fail(function (e) {
+//          deferred.reject(e);
+//        });
+//      return deferred.promise;
+//    }
 
     // Update function
-    setInterval(function () {
-      getPluginListEntity();
-    }, UPDATE_INTERVAL_IN_SECONDS * 1000);
+//    setInterval(function () {
+//      getPluginListEntity();
+//    }, UPDATE_INTERVAL_IN_SECONDS * 1000);
 
   });
 };

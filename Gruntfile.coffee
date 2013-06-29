@@ -11,7 +11,7 @@ module.exports = (grunt) ->
     wiki_url: "/mnt/tc/DevelopmentProjects/WebStormWorkspace/p/uRequire.wiki/.git"
 
     # wiki file check, file that exists in the wiki for sure
-    wiki_file: "index.md"
+    wiki_file: "Home.md"
     
     # clean directories
     clean:

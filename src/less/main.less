@@ -34,7 +34,7 @@ a {
 
 a.anchor {
   position: relative;
-  color: #6f5a40;
+  color: @urequireSoftblue;
   &:hover {
     text-decoration: none;
   }
@@ -123,7 +123,7 @@ i {
       font-weight: 400;
       line-height: 12px;
       padding-bottom: .5em;
-      border-bottom: 1px solid #6F5A40;
+      border-bottom: 1px solid @urequireSoftblue;
       margin-bottom: 1.5em;
     }
     .span3 {
@@ -138,7 +138,7 @@ i {
   .home-header {
     margin: 1em 0 3.5em;
     h1 {
-      color: #453015;
+      color: @urequireBlue;
       position: relative;
     }
     .urequire-name {
@@ -372,7 +372,7 @@ i {
     a {
       margin: 0;
       padding: 10px 15px 10px 33px;
-      color: #6f5a40;
+      color: @urequireSoftblue;
       &:hover {
         background: #dcdcdc;
       }
@@ -428,7 +428,7 @@ i {
     .btn {
       font-size: 14px;
       padding: 7px 12px;
-      color: #6f5a40;
+      color: @urequireSoftblue;
       font-weight: 500;
       border: 1px solid rgb(177, 166, 147);
       background-image: linear-gradient(bottom, rgb(204, 190, 163) 0%, rgb(231, 214, 183) 100%);
@@ -466,7 +466,7 @@ i {
         border-left-width: 6px;
         border-right-width: 6px;
         border-top-width: 6px;
-        border-top: 6px solid #6f5a40;
+        border-top: 6px solid @urequireSoftblue;
         margin-top: 8px;
       }
       .choice {
@@ -484,7 +484,7 @@ i {
       border: 1px solid #e1d1b2;
       margin: 0;
       li > a {
-        color: #6f5a40;
+        color: @urequireSoftblue;
         padding: 6px 20px;
         &:hover {
           background: #f3ece0;
@@ -506,13 +506,13 @@ i {
   margin: 15px 0;
   border-radius: 5px;
   padding: 7px 15px;
-  color: #6f5a40;
+  color: @urequireSoftblue;
   font-size: 16px;
   border: 1px solid #CFBFAC;
   position: relative;
   &:hover {
     background: #f0debd;
-    color: #6f5a40;
+    color: @urequireSoftblue;
     text-decoration: none;
   }
   &:active {
@@ -603,9 +603,9 @@ i {
   letter-spacing: 1px;
   text-shadow: @text-shadow;
   .inner {
-    background: #453015;
+    background: @urequireSoftblue;
     .container {
-      background: #453015;
+      background: @urequireSoftblue;
       .pull-left {
         margin-left: 10px;
         a {
@@ -668,7 +668,7 @@ pre {
     font-size: 14px;
     padding: 1em;
     color: #F8F8F8;
-    background: #181818;
+    background: #0e1340;
   }
 }
 
@@ -749,7 +749,7 @@ pre .literal {
     background-color: @navbarInverseBackground;
     .brand, .nav > li > a {
       text-shadow: 1px 1px 2px rgba(0, 0, 0, .25);
-      color: @urequireBlue
+      color: @urequireDarkBlue
     }
   }
 }
@@ -799,7 +799,7 @@ pre.terminal:after {
 pre.terminal:before {
   display: block;
   position: absolute;
-  content: "grunt";
+  content: "urequire";
   text-align: center;
   color: #000;
   border-top-left-radius: 5px;
