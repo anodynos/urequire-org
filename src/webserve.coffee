@@ -36,7 +36,7 @@ app.configure ->
 ###
 Server configuration
 ###
-port = process.env.PORT or '8080'
+port = '80' #process.env.PORT or
 app.listen port
 console.log "Starting a server on port: " + port
 
