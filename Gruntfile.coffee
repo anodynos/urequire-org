@@ -4,11 +4,10 @@ module.exports = (grunt) ->
   grunt.initConfig
     
     # server port, used to serve the site and run tests
-    server_port: 5678
+    server_port: 8080
     
     # wiki url
-#    wiki_url: "https://github.com/anodynos/uRequire.wiki.git"
-    wiki_url: "/mnt/tc/DevelopmentProjects/WebStormWorkspace/p/uRequire.wiki/.git"
+    wiki_url: "https://github.com/anodynos/uRequire.wiki.git"
 
     # wiki file check, file that exists in the wiki for sure
     wiki_file: "Home.md"
@@ -16,7 +15,7 @@ module.exports = (grunt) ->
     # clean directories
     clean:
       build: ["build/"]
-#      tmp: ["tmp/"]
+      tmp: ["tmp/"]
 
     # compile less -> css
     less:
@@ -118,8 +117,11 @@ module.exports = (grunt) ->
     nodeunit:
       all: ["test/*_test.js"]
 
-  
+    shell:
+      coffee: command: "coffee -cb -o ./build ./src"
+
   # Load contrib tasks
+  grunt.loadNpmTasks "grunt-shell"
   grunt.loadNpmTasks "grunt-contrib-clean"
   grunt.loadNpmTasks "grunt-contrib-jshint"
   grunt.loadNpmTasks "grunt-contrib-concat"
@@ -131,7 +133,7 @@ module.exports = (grunt) ->
   
   # Load local tasks
   grunt.loadTasks "tasks" # getWiki, docs tasks
-  grunt.registerTask "build", ["copy", "jade", "docs", "blog", "concat"] #"plugins",
+  grunt.registerTask "build", ["shell:coffee", "copy", "jade", "docs", "blog", "concat"] #"plugins",
   grunt.registerTask "default", ["build", "less:production"]
   grunt.registerTask "d", ["jade", "docs", 'serve']
   grunt.registerTask "dev", ["build", "less:development", "watch"] #"jshint",

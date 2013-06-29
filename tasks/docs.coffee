@@ -188,12 +188,13 @@ module.exports = (grunt) ->
 
     done = @async()
     # clean the wiki directory, clone a fresh copy
-#    exec "git clone " + grunt.config.get("wiki_url") + " tmp/wiki", (error) ->
-#      grunt.log.warn "Warning: Could not clone the wiki! Trying to use a local copy..."  if error
-    if grunt.file.exists("tmp/wiki/" + grunt.config.get("wiki_file"))
-      # confirm the wiki exists, if so generate the docs
-      generateDocs()
-    else
-      # failed to get the wiki
-      grunt.log.error "Error: The wiki is missing..."
-      done false
+    exec "git clone " + grunt.config.get("wiki_url") + " tmp/wiki", (error) ->
+      grunt.log.warn "Warning: Could not clone the wiki! Trying to use a local copy..."  if error
+
+      if grunt.file.exists("tmp/wiki/" + grunt.config.get("wiki_file"))
+        # confirm the wiki exists, if so generate the docs
+        generateDocs()
+      else
+        # failed to get the wiki
+        grunt.log.error "Error: The wiki is missing..."
+        done false
