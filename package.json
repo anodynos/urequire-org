@@ -1,13 +1,13 @@
 {
   "name": "urequire.org",
   "subdomain": "urequire",
-  "version": "0.0.5-2",
+  "version": "0.0.5-3",
   "engines": {
     "node": ">=0.8.x",
     "npm": "~1.2.x"
   },
   "scripts": {
-    "start": "build/webserve.js"
+    "start": "./build/webserve.js"
   },
   "private": true,
   "dependencies": {
