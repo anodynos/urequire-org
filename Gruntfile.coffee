@@ -5,9 +5,6 @@ module.exports = (grunt) ->
     
     # server port, used to serve the site and run tests
     server_port: 8080
-    
-    # wiki url
-    wiki_url: "https://github.com/anodynos/uRequire.wiki.git"
 
     # wiki file check, file that exists in the wiki for sure
     wiki_file: "Home.md"
@@ -43,9 +40,9 @@ module.exports = (grunt) ->
 #        files: "src/tmpl/**/*.js"
 #        tasks: ["jade", "default"]
 
-      js:
-        files: "src/js/**"
-        tasks: ["concat"]
+#      js:
+#        files: "src/js/**"
+#        tasks: ["concat"]
 
       other:
         files: "src/img/**"
@@ -53,7 +50,7 @@ module.exports = (grunt) ->
 
       jade:
         files: "src/tmpl/**"
-        tasks: ["jade", "docs", "blog", "concat"]
+        tasks: ["jade", "docs", "blog"] #"concat"
 
       docs:
         files: "tmp/wiki/**"
@@ -70,12 +67,11 @@ module.exports = (grunt) ->
         files:
           "build/404.html": "src/tmpl/404.jade"
 
-    concat:
-      
-      # if we add more js, modify this properly
-      plugins:
-        src: ["src/js/vendor/lib/jquery.js", "src/js/vendor/lib/lodash.js", "src/js/vendor/*.js", "src/js/*.js"]
-        dest: "build/js/plugins.js"
+#    concat:
+#      # if we add more js, modify this properly
+#      plugins:
+#        src: ["src/js/**/*.js"]
+#        dest: "build/js/javascripts.js"
 
     jshint:
       all: ["tasks/*.js"]
@@ -124,7 +120,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-shell"
   grunt.loadNpmTasks "grunt-contrib-clean"
   grunt.loadNpmTasks "grunt-contrib-jshint"
-  grunt.loadNpmTasks "grunt-contrib-concat"
+#  grunt.loadNpmTasks "grunt-contrib-concat"
   grunt.loadNpmTasks "grunt-contrib-watch"
   grunt.loadNpmTasks "grunt-contrib-less"
   grunt.loadNpmTasks "grunt-contrib-jade"
@@ -133,9 +129,9 @@ module.exports = (grunt) ->
   
   # Load local tasks
   grunt.loadTasks "tasks" # getWiki, docs tasks
-  grunt.registerTask "build", ["shell:coffee", "copy", "jade", "docs", "blog", "concat"] #"plugins",
+  grunt.registerTask "build", ["shell:coffee", "copy", "jade", "docs", "blog"] #"concat" #"plugins",
   grunt.registerTask "default", ["build", "less:production"]
   grunt.registerTask "d", ["jade", "docs", 'serve']
-  grunt.registerTask "dev", ["build", "less:development", "watch"] #"jshint",
+  grunt.registerTask "dev", ["clean", "build", "less:development", "watch"] #"jshint",
   grunt.registerTask "test", ["nodeunit"]
   grunt.registerTask "serve", ["server"]
