@@ -1,8 +1,11 @@
 {
   "name": "urequire.org",
   "subdomain": "urequire",
-  "domains": ["urequire.org", "www.urequire.org"],
-  "version": "0.0.6",
+  "domains": [
+    "urequire.org",
+    "www.urequire.org"
+  ],
+  "version": "0.0.7",
   "engines": {
     "node": ">=0.8.x",
     "npm": "~1.2.x"

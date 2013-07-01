@@ -16,7 +16,7 @@ module.exports = (grunt) ->
   ###
   Custom task to generate grunt documentation
   ###
-  grunt.registerTask "docs", "Compile Grunt Docs to HTML", ->
+  grunt.registerTask "docs", "Compile uRequire Docs to HTML", ->
 
     ###
     generate the docs based on the github wiki
@@ -189,7 +189,7 @@ module.exports = (grunt) ->
     done = @async()
     # clean the wiki directory, clone a fresh copy
 
-    exec (do -> grunt.log.writeln cmd="git clone -l --no-hardlinks ../uRequire.wiki tmp/wiki"; cmd),
+    exec (do -> grunt.log.writeln gitCmd="git clone -l --no-hardlinks ../uRequire.wiki tmp/wiki"; gitCmd),
 #    exec (do -> grunt.log.writeln cmd="git clone https://github.com/anodynos/uRequire.wiki.git tmp/wiki"; cmd),
          (error) ->
             if error

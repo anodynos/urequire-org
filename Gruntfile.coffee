@@ -130,8 +130,8 @@ module.exports = (grunt) ->
   # Load local tasks
   grunt.loadTasks "tasks" # getWiki, docs tasks
   grunt.registerTask "build", ["shell:coffee", "copy", "jade", "docs", "blog"] #"concat" #"plugins",
-  grunt.registerTask "default", ["build", "less:production"]
+  grunt.registerTask "default", ["dev"]
   grunt.registerTask "d", ["jade", "docs", 'serve']
-  grunt.registerTask "dev", ["clean", "build", "less:development", "watch"] #"jshint",
+  grunt.registerTask "dev", ["clean", "build", "less:development"] #"jshint",
   grunt.registerTask "test", ["nodeunit"]
   grunt.registerTask "serve", ["server"]
