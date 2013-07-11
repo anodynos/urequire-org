@@ -1,4 +1,5 @@
 module.exports = (grunt) ->
+  _ = grunt.util._
   
   # Project configuration.
   grunt.initConfig
@@ -116,22 +117,49 @@ module.exports = (grunt) ->
     shell:
       coffee: command: "coffee -cb -o ./build ./src"
 
-  # Load contrib tasks
-  grunt.loadNpmTasks "grunt-shell"
-  grunt.loadNpmTasks "grunt-contrib-clean"
-  grunt.loadNpmTasks "grunt-contrib-jshint"
-#  grunt.loadNpmTasks "grunt-contrib-concat"
-  grunt.loadNpmTasks "grunt-contrib-watch"
-  grunt.loadNpmTasks "grunt-contrib-less"
-  grunt.loadNpmTasks "grunt-contrib-jade"
-  grunt.loadNpmTasks "grunt-contrib-copy"
-  grunt.loadNpmTasks "grunt-contrib-nodeunit"
-  
-  # Load local tasks
+  grunt.loadNpmTasks plugin for plugin in [
+    "grunt-shell"
+    "grunt-contrib-clean"
+    "grunt-contrib-jshint"
+  #  "grunt-contrib-concat"
+    "grunt-contrib-watch"
+    "grunt-contrib-less"
+    "grunt-contrib-jade"
+    "grunt-contrib-copy"
+    "grunt-contrib-nodeunit"
+  ]
+
   grunt.loadTasks "tasks" # getWiki, docs tasks
-  grunt.registerTask "build", ["shell:coffee", "copy", "jade", "docs", "blog"] #"concat" #"plugins",
-  grunt.registerTask "default", ["dev"]
-  grunt.registerTask "d", ["jade", "docs", 'serve']
-  grunt.registerTask "dev", ["clean", "build", "less:development"] #"jshint",
-  grunt.registerTask "test", ["nodeunit"]
-  grunt.registerTask "serve", ["server"]
+
+  ### shortcuts generation ###
+  splitTasks = (tasks)-> if !_.isString tasks then tasks else (_.filter tasks.split(' '), (v)-> v)
+  grunt.registerTask shortCut, splitTasks tasks for shortCut, tasks of {
+    "default": ["dev"]
+    "build": ["shell:coffee", "copy", "jade", "docs", "blog"] #"concat" #"plugins",
+    "dev": ["jade", "docs", 'serve']
+    "full": ["clean", "build", "less:development"] #"jshint",
+    "test": ["nodeunit"]
+    "serve": ["server"]
+
+    # generic shortcuts
+    "c": "clean"
+    "d": "full"
+    "t": "test"
+    "b": "build"
+    # IDE shortcuts
+    "alt-c": "c"
+    "alt-b": "b"
+    "alt-t": "t"
+    "alt-d": "full"
+  } when tasks
+
+
+# todo: report 'issue' to coffeescript
+#val1 = -> 'val1'
+#val2 = 'val2'
+#
+#myObjectCreation =
+#  'bar1': val1
+#   bar2 : val2
+#
+#console.log myObjectCreation

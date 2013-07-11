@@ -5,7 +5,7 @@
     "urequire.org",
     "www.urequire.org"
   ],
-  "version": "0.0.7",
+  "version": "0.4.2",
   "engines": {
     "node": ">=0.8.x",
     "npm": "~1.2.x"
