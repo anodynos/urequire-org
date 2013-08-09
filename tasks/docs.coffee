@@ -1,37 +1,22 @@
-#
-# * grunt docs
-# * http://gruntjs.com/
-# *
-# * Copyright (c) 2013 grunt contributors
-# * Licensed under the MIT license.
-#
+# * urequire.org - based on http://gruntjs.com/
 module.exports = (grunt) ->
-  "use strict"
-  fs = require("fs")
+  fs = require "fs"
   exec = require("child_process").exec
-  jade = require("jade")
-  highlighter = require("highlight.js")
-  docs = require("./lib/docs").init(grunt)
+  jade = require "jade"
+  highlighter = require "highlight.js"
+  docs = require("./lib/docs").init grunt
+  wikiBase = "../uRequire.wiki/"
 
-  ###
-  Custom task to generate grunt documentation
-  ###
+  ### Custom task to generate urequire documentation###
   grunt.registerTask "docs", "Compile uRequire Docs to HTML", ->
 
-    ###
-    generate the docs based on the github wiki
-    ###
+    ### generate the docs based on the github wiki ###
     generateDocs = ->
-      ###
-      Helper Functions
-      ###
+      ###Helper Functions###
 
-      ###
-      Generate grunt guides documentation
-      ###
+      ###Generate guides documentation ###
       generateGuides = ->
         grunt.log.ok "Generating Guides..."
-        base = "tmp/wiki/"
 
         # API Docs
         sidebars = []
@@ -43,13 +28,13 @@ module.exports = (grunt) ->
         sidebars.push getSidebarSection("### Community")
         sidebars.push getSidebarSection("### Migration guides")
 
-        names = grunt.file.expand(cwd: base, ["*", "!Blog-*", "!*.js"])
+        names = grunt.file.expand(cwd: wikiBase, ["*", "!Blog-*", "!*.js"])
         names.forEach (name) ->
           title = name.replace(/-/g, " ").replace(".md", "")
           segment = name
             .replace(RegExp(" ", "g"), "-")
             .replace(".md", "").toLowerCase()
-          src = base + name
+          src = wikiBase + name
           dest = "build/docs/" + name.replace(".md", "").toLowerCase() + ".html"
 
           grunt.file.copy src, dest,
@@ -61,7 +46,7 @@ module.exports = (grunt) ->
                   rootSidebar: true
                   pageSegment: segment
                   title: title
-                  content: docs.anchorFilter(marked(docs.wikiAnchors(src)))
+                  content: docs.anchorFilter marked docs.wikiAnchors src
                   sidebars: sidebars
 
                 return jade.compile(grunt.file.read(file),
@@ -73,55 +58,6 @@ module.exports = (grunt) ->
 
         grunt.log.ok "Created " + names.length + " files."
 
-#      ###
-#      Generate config documentation
-#      ###
-#      generateConfigDocs = ->
-#        grunt.log.ok "Generating Config Docs..."
-#
-#        # config Docs
-#        sidebars = []
-#        base = "tmp/wiki/"
-#        names = grunt.file.expand(
-#          cwd: base
-#        , ["config.*.md"])
-#        names = names.map((name) ->
-#          name.substring 0, name.length - 3
-#        )
-#
-#        # the default api page is special
-#        names.push "config"
-#
-#        # TODO: temporary store for these
-##        names.push "Inside-Tasks"
-##        names.push "Exit-Codes"
-#
-#        # get docs sidebars
-#        sidebars[0] = getSidebarSection("## Config", "icon-cog")
-#        sidebars[1] = getSidebarSection("### Other")
-#        names.forEach (name) ->
-#          src = base + name + ".md"
-#          dest = "build/config/" + name.toLowerCase() + ".html"
-#          grunt.file.copy src, dest,
-#            process: (src) ->
-#              try
-#                file = "src/tmpl/docs.jade"
-#                templateData =
-#                  page: "config"
-#                  pageSegment: name.toLowerCase()
-#                  title: name.replace(/-/g, " ")
-#                  content: docs.anchorFilter(marked(docs.wikiAnchors(src)))
-#                  sidebars: sidebars
-#
-#                return jade.compile(grunt.file.read(file),
-#                  filename: file
-#                )(templateData)
-#              catch e
-#                grunt.log.error e
-#                grunt.fail.warn "Jade failed to compile."
-#
-#
-#        grunt.log.ok "Created " + names.length + " files."
 
       ###
       Get sidebar list for section from index.md
@@ -132,7 +68,7 @@ module.exports = (grunt) ->
         items = []
 
         # read the index.md of the wiki, extract the section links
-        lines = fs.readFileSync("tmp/wiki/Home.md").toString().split("\n")
+        lines = fs.readFileSync("#{wikiBase}Home.md").toString().split "\n"
         for l of lines
           line = lines[l]
 
@@ -165,42 +101,26 @@ module.exports = (grunt) ->
         items
 
       # marked markdown parser
-      marked = require("marked")
+      marked = require "marked"
 
       # Set default marked options
       marked.setOptions
         gfm: true
         anchors: true
-        base: "/"
+        wikiBase: "/"
         pedantic: false
         sanitize: true
 
         # callback for code highlighter
-        highlight: (code) ->
-          highlighter.highlight("coffeescript", code).value
+        highlight: (code)-> highlighter.highlight("coffeescript", code).value
 
-      # urequire guides - wiki articles that are not part of the urequire config
       generateGuides()
-
-      # urequire config docs - wiki articles that start with 'config.*'
-      # generateConfigDocs()
       done(true)
 
     done = @async()
 
-    # clean the wiki directory, clone a fresh copy
-    grunt.file.delete './tmp'
-
-    exec (do -> grunt.log.writeln gitCmd="git clone -l --no-hardlinks ../uRequire.wiki tmp/wiki"; gitCmd),
-#    exec (do -> grunt.log.writeln cmd="git clone https://github.com/anodynos/uRequire.wiki.git tmp/wiki"; cmd),
-       (error) ->
-          if error
-            grunt.log.warn "Warning: Could not clone the wiki! Trying to use a local copy... error = \n #{error}"
-
-          if grunt.file.exists("tmp/wiki/" + grunt.config.get("wiki_file"))
-            # confirm the wiki exists, if so generate the docs
-            generateDocs()
-          else
-            # failed to get the wiki
-            grunt.log.error "Error: The wiki is missing..."
-            done false
+    if grunt.file.exists "#{wikiBase}Home.md"
+      generateDocs()
+    else
+      grunt.log.error "Error: '#{wikiBase}Home.md' is missing..."
+      done false

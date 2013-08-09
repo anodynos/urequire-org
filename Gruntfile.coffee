@@ -1,15 +1,10 @@
 module.exports = (grunt) ->
   _ = grunt.util._
   
-  # Project configuration.
   grunt.initConfig
     
-    # server port, used to serve the site and run tests
     server_port: 8080
 
-    # wiki file check, file that exists in the wiki for sure
-    wiki_file: "Home.md"
-    
     # clean directories
     clean:
       build: ["build/"]
@@ -54,7 +49,7 @@ module.exports = (grunt) ->
         tasks: ["jade", "docs", "blog"] #"concat"
 
       docs:
-        files: "tmp/wiki/**"
+        files: "../uRequire.wiki/**"
         tasks: ["docs"]
     
     # compile page layouts
