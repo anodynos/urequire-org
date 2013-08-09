@@ -84,49 +84,49 @@ module.exports = function (grunt) {
       });
     });
 
-    // api routes
-    app.get('/config*', function (req, res, next) {
-      req.url = req.url.toLowerCase();
-      var filePath = 'build' + req.url + '.html';
+//    // api routes
+//    app.get('/config*', function (req, res, next) {
+//      req.url = req.url.toLowerCase();
+//      var filePath = 'build' + req.url + '.html';
+//
+//      // redirect to the main api page, fix slashes and folder issues
+//      if (req.url === '/config') {
+//        res.redirect(301, '/config/config.html');
+//        return;
+//      }
+//
+//      fs.exists(filePath, function (exists) {
+//        if (exists) {
+//          res.sendfile(filePath);
+//        } else {
+//          next();
+//        }
+//      });
+//    });
 
-      // redirect to the main api page, fix slashes and folder issues
-      if (req.url === '/config') {
-        res.redirect(301, '/config/config.html');
-        return;
-      }
+//    // news route
+//    app.get('/blog*', function (req, res, next) {
+//      var filePath = 'build' + req.url + '.html';
+//      if (req.url === '/blog') {
+//        res.sendfile('build/blog.html');
+//      } else {
+//
+//        fs.exists(filePath, function (exists) {
+//          if (exists) {
+//            res.sendfile(filePath);
+//          } else {
+//            next();
+//          }
+//        });
+//      }
+//    });
 
-      fs.exists(filePath, function (exists) {
-        if (exists) {
-          res.sendfile(filePath);
-        } else {
-          next();
-        }
-      });
-    });
-
-    // news route
-    app.get('/blog*', function (req, res, next) {
-      var filePath = 'build' + req.url + '.html';
-      if (req.url === '/blog') {
-        res.sendfile('build/blog.html');
-      } else {
-
-        fs.exists(filePath, function (exists) {
-          if (exists) {
-            res.sendfile(filePath);
-          } else {
-            next();
-          }
-        });
-      }
-    });
-
-    // rss atom feed
-    app.get('/rss', function (req, res) {
-      res.setHeader('Content-Type', 'application/xml');
-      res.setHeader('Charset', 'utf-8');
-      res.sendfile('build/atom.xml');
-    });
+//    // rss atom feed
+//    app.get('/rss', function (req, res) {
+//      res.setHeader('Content-Type', 'application/xml');
+//      res.setHeader('Charset', 'utf-8');
+//      res.sendfile('build/atom.xml');
+//    });
 
     // final route, if nothing else matched, this will match docs
     app.get('*', function (req, res, next) {
