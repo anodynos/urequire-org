@@ -1,6 +1,6 @@
 # urequire.org
 
-# uRequire: The JavaScript Universal Module Converter
+# uRequire: The JavaScript Universal Module & Resource Converter
 
 /* TEAM */
 

@@ -6,11 +6,11 @@ html(lang='en')
     meta(charset='utf-8')
     meta(name='keywords', content='javascript, modules, module, convert, commonjs, AMD, UMD, UMDjs, format, converter, conversion, requirejs, require, define, browserify, dependency, dependencies, bundle, package')
 
-    meta(name='description', content='Javascript Universal Module Converter: convert from commonjs modules to AMD, AMD modules to commonjs, requirejs to nodejs to UMD, to standalone optimized .js')
+    meta(name='description', content='Javascript Universal Module & Resource Converter: convert modules from commonjs to AMD, AMD modules to commonjs, requirejs to nodejs to UMD, to standalone optimized .js')
 
-    title= (locals.title ? locals.title + ' - ' : '') + 'uRequire: JavaScript Universal Module Converter: modules converted from AMD to nodejs & commonjs and back and also to UMD or plain script .js'
+    title= (locals.title ? locals.title + ' - ' : '') + 'uRequire: JavaScript Universal Module & Resource Converter: convert modules from AMD to nodejs, commonjs and back, to UMD, to plain script .js'
     link(rel='stylesheet', href='/css/main.css')
-    //link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Lato:400,700')
+    link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Lato:400,700')
     link(rel='shortcut icon', href='../img/favicon.ico', type='image/x-icon')
     script
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -22,7 +22,24 @@ html(lang='en')
       ga('send', 'pageview');
 
   body(class=locals.page ? 'page-' + locals.page + (locals.page === 'index' ? '' : ' page-secondary') : '')
+
+    a(href="http://opensource.nodejitsu.com/")
+      img(
+        style="position: absolute; top: 0; left: 0; border: 0"
+        src="img/foss-l-orange.png"
+        alt="Nodejitsu free for Open Source program"
+      )
+
+    a(href='https://github.com/anodynos/urequire')
+      img(
+        style='position: absolute; top: 0; right: 0; border: 0;'
+        src='img/github_forkme_right_orange_ff7600.png'
+        alt='Fork me on GitHub'
+      )
+
     include blocks/header
+
     .content
       block content
+
     include blocks/footer

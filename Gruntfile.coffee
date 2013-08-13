@@ -29,7 +29,7 @@ module.exports = (grunt) ->
 
     watch:
       less:
-        files: "src/less/*.less"
+        files: "src/less/**/*.less"
         tasks: ["less:development"]
 
 #      tmpl:
@@ -101,7 +101,7 @@ module.exports = (grunt) ->
         files: [
           expand: true
           cwd: "src/"
-          src: ["*"]
+          src: ["*", "!**/*.coffee"]
           dest: "build/"
           filter: "isFile"
         ]
@@ -109,8 +109,7 @@ module.exports = (grunt) ->
     nodeunit:
       all: ["test/*_test.js"]
 
-    shell:
-      coffee: command: "coffee -cb -o ./build ./src"
+    shell: coffee: command: "coffee -cb -o ./build ./src"
 
   grunt.loadNpmTasks plugin for plugin in [
     "grunt-shell"
@@ -129,12 +128,12 @@ module.exports = (grunt) ->
   ### shortcuts generation ###
   splitTasks = (tasks)-> if !_.isString tasks then tasks else (_.filter tasks.split(' '), (v)-> v)
   grunt.registerTask shortCut, splitTasks tasks for shortCut, tasks of {
-    "default": ["dev"]
-    "build": ["shell:coffee", "copy", "jade", "docs", "blog"] #"concat" #"plugins",
-    "dev": ["jade", "docs", 'serve']
-    "full": ["clean", "build", "less:development"] #"jshint",
-    "test": ["nodeunit"]
-    "serve": ["server"]
+    default:  "dev"
+    build:    "shell:coffee copy jade docs blog" #"concat" #"plugins",
+    dev:      "jade docs serve"
+    full:     "clean build less:development" #"jshint",
+    test:     "nodeunit"
+    serve:    "server"
 
     # generic shortcuts
     "c": "clean"
