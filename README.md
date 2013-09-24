@@ -1,6 +1,5 @@
-uRequire Website (based on Grunt Website)
+uRequire.org Website (based on http://gruntjs.com/ Website, with lame changes)
 ==========================
-
 
 ## Build
 
@@ -11,8 +10,9 @@ uRequire Website (based on Grunt Website)
 ## Setup Development
 
 1. `npm install`
-1. `grunt` - gets the latest docs, generates the site
-1. use ```grunt watch``` if you are editing templates or less files. (Note: doc pages will have to be regenerated)
+2. `git clone https://github.com/anodynos/urequire/wiki` to `../uRequire.wiki`
+3. `grunt build` - gets the latest docs, generates the site
+4. use ```grunt watch``` if you are editing templates or less files. (Note: `MasterDefaultsConfig.coffee.md` and `ResourceConverters.coffee.md` aren't part of the wiki, but https://github.com/anodynos/urequire - edit them there)
 
 ## Run Server
 
@@ -25,22 +25,4 @@ uRequire Website (based on Grunt Website)
 
 ## Notes
 
-1. Default server port is : `5678`. Configured in the `Gruntfile`
-
-## Deploy to Heroku
-
-Set Heroku keys (if needed) with
-```
-ssh-keygen -t rsa -C "YOUR_HEROKU_EMAIL" -f  ~/.ssh/id_rsa_heroku
-
-ssh-add ~/.ssh/id_rsa_heroku
-
-heroku keys:add ~/.ssh/id_rsa_heroku.pub
-
-```
-
-Push
-
-```
-git push git@heroku.com:grunt.git master:master
-```
+1. Default server port is : `8080`. Configured in the `Gruntfile`

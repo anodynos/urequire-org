@@ -1,7 +1,7 @@
 extends layout
 
 block gettingStarted
-  p Read the <a href="/quick-introduction">Quick Introduction</a> on using uRequire to modularize your code. See how trivial <a href="/using-urequire">Using uRequire</a> is. Then learn more about Module Authoring and the <a href="/universal-module-format">Universal Module Format</a>.
+  p Read the <a href="/quick-introduction">Quick Introduction</a> on using uRequire to modularize your code. See how trivial <a href="/using-urequire">Using uRequire</a> is. Learn more about Module Authoring and the <a href="/universal-module-format">Universal Module Format</a>. Check out the <a href="/masterdefaultsconfig.coffee">wicked uRequire config</a> and how to easily <a href="/resourceconverters.coffee">Convert Resources</a>.
 
 block content
   .container
@@ -13,37 +13,44 @@ block content
               span.tag-line The JavaScript Universal Module & Resource Converter
 
           .whyclear
-            h3 A Praise to Modules, Modular Development & Deployment
+            pre.code praise.to("Modular").forEach(['Development', 'Deployment']);
 
           .why.left
             h2 Why use <em>modules</em> like AMD, Common/JS or Harmony/ES6 ?
-            p Cause you want to write <em>modular code</em>, with clearly stated dependencies.
+            p Write <em>modular code</em>, with clearly stated dependencies.
             p Code for humans to follow, that is maintainable & reusable.
             p The damnation of authoring Javascript as <strong>one huge file</strong> or <strong>concatenating</strong> must end!
             h5 Are you still concatenating .js files ?
 
           .why.right
             h2 Why use Module Loaders?
-            p Cause with modern single page apps, you're not receiving just a REST on demand, but also executable code.
-            P You want a proper dynamic code loading mechanism, either your web app is on the browser, the mobile and even nodejs.
+            p Cause in modern single-page apps, you're not receiving just a data REST, but also executable code.
+            p You want a dynamic code loading mechanism.
+            p You want to follow standards and the available tools.
+            p Either your app is on browser, mobile or even nodejs.
             h5 Run <em>single page Apps</em> with truly dynamic code loading.
 
           .whyclear
-            h3 You Require this
+            pre.code u.require(this);
 
           .why.left
             h2 Why use uRequire ?
-            p Cause module formats are incompatible in almost all terms: <strong>syntax, execution environment, capabilities, dependency/path resolution, plugins, semantics </strong>etc.
-            p You want to be powered by them, but write in one <a href="universal-module-format">Universal Module Format</a>, not explicitely for each of them.
-            p But you do want the goodies from all of 'em! <em>uRequire does exactly this!</em>
-            h5 If you have sensibly `define`d it, u`Require` will find it.
+            p Module formats are incompatible in all terms: <strong>syntax, execution environment, capabilities, dependency/path resolution, plugins, semantics </strong>etc.
+            p You want the power, goodies & standards assurance from all.
+            p But write in just one or a <a href="universal-module-format">Universal Module Format</a>!
+            p Be able to convert from any format, to any other.
+            h5 <em>uRequire does exactly this!</em> If you have sensibly `define`d it, u`Require` will find it.
 
           .why.right
             h2 What will uRequire do ?
             p Help you write <strong>modular Javascript code once, run everywhere</strong>.
-            p You will avoid boilerplate, yet use the full richness of modular development & module systems.
-            p And voila, you 'll execute in all runtimes: <strong>Web/Script, Web/AMD, nodejs</strong>!
-            h5 Focus only on what {matters: "your code"}. Then {execute:"everywhere"}.
+            p Avoid boilerplate, just use the richness of modular development.
+            p <strong>In-memory Convert Resources</strong>, with the 1st and only <em>Modules & Dependencies aware</em> builder.
+            p <strong>Manipulate the Modules</strong> while building: inject, remove, replace Dependencies & code.
+            h5 Voila, execute in all runtimes: <strong>Web/Script, Web/AMD, nodejs</strong>!
+
+          .whyclear
+            pre.code focus.on("Da JS Code").then({convert:"anything"}).then({execute:"everywhere"});
 
           .technology
             .how-get-started
@@ -55,11 +62,16 @@ block content
           .latest-version
             h3 Latest Version
             ul
-              li Stable: v0.5.0
+              li Stable: v0.6.0
+              ul.well-small
+                li Improved Parsing / extraction with Esprima / Mozilla Parser AST
+                li Module manipulation (dependencies & code) BEFORE template is applied
+                li Many bug fixes & improvements
 
           .latest-news
             h3 Latest News
-            ul
+            p <a href="/history">Release v0.6.0 - see History</a>
+            //ul
               each article in news
                 li
                   a(href='/blog/' + article.url)
