@@ -16,11 +16,13 @@ block content
             pre.code praise.to("Modular").forEach(['Development', 'Deployment']);
 
           .why.left
-            h2 Why use <em>modules</em> like AMD, Common/JS or Harmony/ES6 ?
-            p Write <em>modular code</em>, with clearly stated dependencies.
-            p Code for humans to follow, that is maintainable & reusable.
-            p The damnation of authoring Javascript as <strong>one huge file</strong> or <strong>concatenating</strong> must end!
-            h5 Are you still concatenating .js files ?
+            :markdown
+              ## Why use *modules* like **AMD** or **Common/JS** ?
+              * Write *modular, maintainable & reusable code*, with clearly stated dependencies.
+
+              * The damnation of authoring Javascript as **one huge file** or **concatenating** must end!
+
+              ##### Are you still concatenating .js files ?
 
           .why.right
             h2 Why use Module Loaders?
@@ -66,7 +68,7 @@ block content
           //  img(alt='PayPayl donate button', src='https://www.paypalobjects.com/en_AU/i/btn/btn_donate_SM.gif')
 
           .latest-version
-            h3 Latest Version
+            h5 Latest Version
             ul
               li Stable: v0.6.7
               ul.well-small
