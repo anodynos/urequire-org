@@ -60,20 +60,31 @@ block content
 
       .span3
         .well.sidebar-nav
+          //a(href='https://flattr.com/submit/auto?user_id=anodynos&url=http%3A%2F%2Furequire.org')
+          //  img(alt='Flattr donate button', src='http://api.flattr.com/button/flattr-badge-large.png')
+          //a(href='https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=XZGDQKS96XGP8&lc=GR&item_name=uRequire%2eorg&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted')
+          //  img(alt='PayPayl donate button', src='https://www.paypalobjects.com/en_AU/i/btn/btn_donate_SM.gif')
+
           .latest-version
             h3 Latest Version
             ul
-              li Stable: v0.6.6
+              li Stable: v0.6.7
               ul.well-small
                 li Improved Parsing / extraction with Esprima (Mozilla Parser AST)
                 li Module manipulation (dependencies & code) BEFORE template is applied
                 li External Processes / LESS example support
-                li Added `build.bare` & `build.runtimeInfo`, `build.useStrict` & `build.globalWindow` flags
+                li Build/Template options: [`bare`, `runtimeInfo`, `useStrict` & `globalWindow`] as flags & `filez` specs
                 li Added template `UMDplain`
+
+          .social
+            a.github(href='https://github.com/anodynos/urequire', alt='uRequire on GitHub')
+              span.icon-github
+            a.twitter(href='https://twitter.com/urequire/', alt='uRequire on Twitter')
+              span.icon-twitter
 
           .latest-news
             h3 Latest News
-            p <a href="/history">Release v0.6.6 - see History</a>
+            p <a href="/history">Release v0.6.7 - see History</a>
             //ul
               each article in news
                 li
@@ -84,11 +95,5 @@ block content
           .getting-started
             h3 Getting Started
             block gettingStarted
-
-          .social
-            a.github(href='https://github.com/anodynos/urequire', alt='uRequire on GitHub')
-              span.icon-github
-            a.twitter(href='https://twitter.com/urequire/', alt='uRequire on Twitter')
-              span.icon-twitter
 
           include blocks/advertisements
