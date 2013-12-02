@@ -1,10 +1,9 @@
-@import "variables";
 @import "bootstrap/bootstrap";
+@import "variables";
 // import code highlight theme
 @import "zenburn";
 @import "icons";
 @import "forms";
-@import "hero-unit";
 @import "bootstrap/wells";
 @import "effects";
 @import "advertisements";
@@ -89,6 +88,7 @@ i {
 }
 
 .page-secondary .brand .logo {
+  width: 270px;
   background-size: 100% auto;
   -ms-behavior: url('/backgroundsize.htc');
 }
@@ -317,7 +317,7 @@ i {
 }
 
 .sidebar-nav {
-  margin-top: 210px;
+  margin-top: 245px;
   padding: 0;
   .nav-header {
     background: @navlistBackground;
@@ -654,7 +654,23 @@ i {
   }
 }
 
+.docs {
+
+  h1 {
+    margin-bottom: 30;
+  }
+
+  h1, h2, h3, h4, h4, h5 {
+    margin-top: 30px;
+    code {
+      font-size: 90%;
+    }
+  }
+}
+
+
 code, pre {
+  color: #00001c;
   font-size: 13px;
   font-family: Monaco, Consolas, "Lucida Console", monospace;
 }
@@ -668,6 +684,13 @@ pre {
     background: #0e1340;
   }
 }
+
+.separator {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  color: #B8C9DA;
+}
+
 
 pre .comment {
   color: #7E7680;

@@ -56,9 +56,8 @@ a.text-success:focus { color: darken(@successText, 10%); }
 // Headings
 // -------------------------
 
-
 h1, h2, h3, h4, h5, h6 {
-//  margin: (@baseLineHeight / 2) 0;
+  margin: (@baseLineHeight / 2) 0;
   font-family: @headingsFontFamily;
   font-weight: @headingsFontWeight;
   line-height: @baseLineHeight;
@@ -71,21 +70,16 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-h1 { margin: (@baseLineHeight * 2.3) 0; }
-h2 { margin: (@baseLineHeight * 2.1) 0; }
-h3 { margin: (@baseLineHeight * 1.9) 0; }
-h4 { margin: (@baseLineHeight * 1.7) 0; }
-h5 { margin: (@baseLineHeight * 0.8) 0; }
-h6 { margin: (@baseLineHeight * 0.7) 0; }
+h1,
+h2,
+h3 { line-height: @baseLineHeight * 2; }
 
-h1, h2, h3 { line-height: @baseLineHeight * 2; }
-
-h1 { font-size: @baseFontSize * 3; }
-h2 { font-size: @baseFontSize * 2.5; }
-h3 { font-size: @baseFontSize * 2.3; }
-h4 { font-size: @baseFontSize * 2 ; }
-h5 { font-size: @baseFontSize * 1 ; }
-h6 { font-size: @baseFontSize * 0.7; }
+h1 { font-size: @baseFontSize * 2.75; } // ~38px
+h2 { font-size: @baseFontSize * 2.25; } // ~32px
+h3 { font-size: @baseFontSize * 1.75; } // ~24px
+h4 { font-size: @baseFontSize * 1.25; } // ~18px
+h5 { font-size: @baseFontSize; }
+h6 { font-size: @baseFontSize * 0.85; } // ~12px
 
 h1 small { font-size: @baseFontSize * 1.75; } // ~24px
 h2 small { font-size: @baseFontSize * 1.25; } // ~18px
@@ -184,7 +178,7 @@ hr {
 
 // Abbreviations and acronyms
 abbr[title],
-// Added data-* attribute to help out our tooltip plugin, per https://github.com/twitter/bootstrap/issues/5257
+// Added data-* attribute to help out our tooltip plugin, per https://github.com/twbs/bootstrap/issues/5257
 abbr[data-original-title] {
   cursor: help;
   border-bottom: 1px dotted @grayLight;

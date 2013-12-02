@@ -21,12 +21,10 @@ module.exports = (grunt) ->
         # API Docs
         sidebars = []
         sidebars.push getSidebarSection "## Introduction", "icon-document-alt-stroke"
-        sidebars.push getSidebarSection "## Module Authoring"
         sidebars.push getSidebarSection "## Using & Configuration"
+        sidebars.push getSidebarSection "## Module Authoring"
         sidebars.push getSidebarSection "## Conversion Templates"
         sidebars.push getSidebarSection "### Misc"
-        sidebars.push getSidebarSection("### Community")
-        sidebars.push getSidebarSection("### Migration guides")
 
         names = grunt.file.expand(cwd: wikiBase, ["*", "!Blog-*", "!*.js"])
         names.forEach (name) ->
@@ -41,17 +39,15 @@ module.exports = (grunt) ->
             process: (src) ->
               try
                 file = "src/tmpl/docs.jade"
-                templateData =
+
+                jade.compile(grunt.file.read(file), filename: file)(
                   page: "docs"
                   rootSidebar: true
                   pageSegment: segment
                   title: title
                   content: docs.anchorFilter marked docs.wikiAnchors src
                   sidebars: sidebars
-
-                return jade.compile(grunt.file.read(file),
-                  filename: file
-                )(templateData)
+                )
               catch e
                 grunt.log.error e
                 grunt.fail.warn "Jade failed to compile."

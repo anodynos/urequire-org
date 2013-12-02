@@ -13,70 +13,281 @@ block content
               span.tag-line The JavaScript Universal Module & Resource Converter
 
           .whyclear
-            pre.code praise.to("Modular").forEach(['Development', 'Deployment']);
+            pre.code.separator define(['Modular', 'Development', 'Deployment'], function(){ return 'that just works, painlessly!' });
 
           .why.left
             :markdown
               ## Why use *modules* like **AMD** or **Common/JS** ?
-              * Write *modular, maintainable & reusable code*, with clearly stated dependencies.
+              Write **modular, maintainable & reusable code**:
 
-              * The damnation of authoring Javascript as **one huge file** or **concatenating** must end!
+                * Clearly stated dependencies & imports.
 
-              ##### Are you still concatenating .js files ?
+                * Employ **standards** and **trusted tools**.
+
+                * Have a **dynamic code loading** mechanism.
+
+                * The damnation of **one huge .js file** or **concatenation** must end!
+
+              ##### Are U still concatenating .js files ?
 
           .why.right
-            h2 Why use Module Loaders?
-            p Cause in modern single-page apps, you're not receiving just a data REST, but also executable code.
-            p You want a dynamic code loading mechanism.
-            p You want to follow standards and the available tools.
-            p Either your app is on browser, mobile or even nodejs.
-            h5 Run <em>single page Apps</em> with truly dynamic code loading.
+            :markdown
+              ## But javascript developers hate modules!
 
+              [Many](http://tomdale.net/2012/01/amd-is-not-the-answer) [woes](http://blog.nexua.org/requirejs-hell-amd-really-is-not-the-answer) on Module formats & *incombatibilities*:
+
+               * [Verbose syntax](https://medium.com/what-i-learned-building/5a31feb15e2), boilerplate ceremony & intricacies (especially AMD)
+
+               * **execution environment** (AMD *only* for Web, CommonJs *only* for nodejs)
+
+               * **capabilities, [dependency/path resolutions](flexible-path-conventions), [plugins](requirejs-loader-plugins), [semantics](synchronous-require)** etc are a mess
+
+               * [UMD](https://github.com/umdjs/umd/) is a **semi-standard boilerplate**, far from usable.
+
+               ##### U need a bridge to enjoy the richness of modules.
           .whyclear
-            pre.code u.require.more.than(this);
+            pre.code.separator require('more').than(this);
 
           .why.left
-            h2 Why use uRequire ?
-            p Module formats are incompatible in all terms: <strong>syntax, execution environment, capabilities, dependency/path resolution, plugins, semantics </strong>etc.
-            p You want the power, goodies & standards from all.
-            p But write in just one or a <a href="universal-module-format">Universal Module Format</a>!
-            p Be able to convert from any format, to any other.
-            p You want a <a href='masterdefaultsconfig.coffee#bundle.dependencies'>Modules & Dependencies aware</a> builder.
-            h5 <em>uRequire does exactly this!</em> If you have sensibly `define`d it, u`Require` will find it.
+            :markdown
+              ## Why use uRequire ?
+
+              * Convert from **any** format to **any** other:
+                * from **AMD** and **CommonJS**
+
+                * to [AMD](amd-template), [CommonJS](nodejs-template), [UMD](amd-template), [Combined for nodejs-Web/AMD-Web/Script](combined-template)
+
+                * ~~ES6/Harmony~~ *when standard/parsers mature*
+
+              * Forget [the woes](synchronous-require#never-miss-a-dependency) or Module formats incompatiblities
+
+              * Eliminate boilerplate & *write modular Javascript code once, run everywhere* : [**Web/Script**, **Web/AMD**, **nodejs**](deployment)
+
+              * A [Universal Module Format](universal-module-format) with the **power, goodies & standards** from all.
+
+              * Convert to a single `combined.js`, that [runs everywhere & is super optimized](combined-template)
+
+              ##### If U `require`d it or `define`d it, **uRequire will find it**.
+
 
           .why.right
-            h2 What will uRequire give me?
-            p Help you write <strong>modular Javascript code once, run everywhere</strong>.
-            p Allow you to avoid boilerplate, just use the richness of modular development.
-            p The most versatile <a href='resourceconverters.coffee#resourceconverter-workflow-principles'>in-memory resources conversion / asset pipeline</a>.
-            p Empowers the <a href='resourceconverters.coffee#manipulating-modules'>Manipulation of Modules</a> while building.
-            h5 Voila, execute in all runtimes: <strong>Web/Script, Web/AMD, nodejs</strong>!
+            :markdown
+              Simplest [Module Authoring](features#module-authoring)
+
+              ```js
+              define(['dep1','dep2'], function(dep1,dep2) {
+                // do stuff with dep1, dep2
+                return {my:'module'}
+              });
+
+              // or
+              var dep1 = require('dep1'),
+                  dep2 = require('dep2');
+              // do stuff with dep1, dep2
+              module.exports = {my: 'module'}
+
+              // or both, in a relaxed, non-weird way
+              define(['dep1','dep2'], function(dep1,dep2) {
+                var dep3JSON = require('json!dep3AsJSON');
+                // do stuff with dep1, dep2, dep3JSON
+                return {my:'module'}
+              });
+              ```
 
           .whyclear
-            pre.code focus.on("Da JS Code").then({convert:"anything"}).then({execute:"everywhere"});
+            pre.code.separator dependencies: exports: bundle: { 'lodash': '_', 'backbone': 'Backbone'}
 
-          .technology
-            .how-get-started
-              h2 How do I get started?
-              block gettingStarted
+          //.why
+          :markdown
+
+            ## A [Modules & Dependencies aware](masterdefaultsconfig.coffee#bundle.dependencies) builder.
+
+            [Exporting modules](exporting-modules) to `window`/`global` variables (like `window._`, `window.$` etc), demystified and with no boilerplate.
+
+            Want [`noConflict()`](generated-noconflict-functionality), baked in? Its a simple declaration away.
+
+            ```js
+            // file `uberscore.js` - export it to root (`window`) as `_B`
+            ({ urequire: { rootExports: '_B', noConflict: true }});
+            module.exports = {...}
+            ```
+            The [same in a config](masterdefaultsconfig.coffee#bundle.dependencies.exports.root) is
+
+            ```
+            dependencies: { exports: { root: { 'uberscore': '_B' }}}`
+            ```
+
+            How about [exporting to your bundle](masterdefaultsconfig.coffee#bundle.dependencies.exports.bundle) only?
+            ```
+            // export/inject `_` in (all) bundle's modules
+            dependencies: { exports: { bundle: { 'lodash': '_' }}}
+            ```
+
+            Want to replace **deps with mocks** or **alternative versions** ?
+
+            [Inject](masterdefaultsconfig.coffee#bundle.dependencies.exports.bundle), [replace](MasterDefaultsConfig.coffee#bundle.dependencies.replace) or even [delete](resourceconverters.coffee#inject-replace-dependencies) dependencies with a simple declaration or a callback:
+            ```
+            // underscore is dead, long live _
+            dependencies: { replace: { lodash: 'underscore'}}
+
+            // with code
+            function(modyle){ modyle.replaceDeps('models/PersonModel', 'mock/models/PersonModelMock'); }
+            ```
+
+
+          .whyclear
+             pre.code.separator [ '$coco', [ '**/*.co'], ((r)-> require('coco').compile r.source), '.js']
+
+          :markdown
+
+            ## A versatile [in-memory Resource Conversion](resourceconverters.coffee#resourceconverter-workflow-principles)
+
+            [Manipulate Module code](resourceconverters.coffee#manipulating-modules) while building:
+
+              * **inject, replace or delete** [code fragments or AST nodes](resourceconverters.coffee#manipulate-replace-ast-code) or dependencies with one liners.
+
+              ```
+              // delete matching code of code skeleton
+              function(m){ m.replaceCode('if (debug){}') }
+
+              // traverse matching nodes, replace or delete em
+              function(m){ m.replaceCode('console.log()', function(nodeAST){return nodeOrStringOrUndefined}) }
+              ```
+
+            Perform **any code manipulation** - eg remove debug code, inject initializations etc
+
+              * [Merge repeating statements](resourceconverters.coffee#bundlemergedcode): keep DRY, save space & speed when [`combined`](combined-template) in a single `.js`
+
+              ```
+              // unify / merge repeating statements
+              bundle: commonCode: 'var expect = chai.expect;'
+              ```
+
+              * Initialize [custom module code](resourceconverters.coffee#beforeBody), for common tasks:
+
+              ```
+              function(m) { m.beforeBody = 'var l = new _B.Logger("Logger" + m.dstFilename);' }
+              ```
+
+            A [ResourceConverter](resourceconverters.coffee#what-is-a-resourceconverter) for our `.coco` files (included along with coffeescript, LiveScript, iced-coffee-script)
+
+              ```coffee
+              [ '$coco', [ '**/*.co'], ((r)-> require('coco').compile r.source), '.js']
+              ```
+
+          .whyclear
+             pre.code.separator ['+inject:VERSION', ['uberscore.js'], (m)-> m.beforeBody = "var VERSION = '0.0.15';"]
+
+          .why.left
+            :markdown
+              ## A spartan Module builder & config
+
+              This `'uberscore'` config (coffeescript) will:
+
+                * [read files from `source`](masterdefaultsconfig.coffee#bundle.path), [write to `build`]((masterdefaultsconfig.coffee#build.dstPath)
+
+                * [filter some `filez`](masterdefaultsconfig.coffee#bundle.filez)
+
+                * convert each module in `path` to [UMD (default)](UMD-template)
+
+                * [copy](masterdefaultsconfig.coffee#bundle.copy) all other files there
+
+                * [Allow `runtimeInfo`](masterdefaultsconfig.coffee#build.runtimeInfo) (eg `__isNode`, `__isAMD`) selectively
+
+                * [inject](masterdefaultsconfig.coffee#bundle.dependencies.exports.bundle) `lodash` dep in each module as `_`
+
+                * [export a global](masterdefaultsconfig.coffee#bundle.dependencies.exports.root) `window._B` with a `noConflict()`
+
+                * [inject](resourceconverters.coffee#inject-any-string-before-after-body) `'var VERSION =...'` before body of `uberscore.js`
+
+                * [minify](masterdefaultsconfig.coffee#build.optimize) each module with UglifyJs2's defaults
+
+                * [add a banner](masterdefaultsconfig.coffee#build.template) (after UMD template & minification)
+
+                * [watch for changes](masterdefaultsconfig.coffee#build.watch), convert only [what's really changed](resourceconverters.coffee#watching-module-changes)
+
+          .why.right
+            :markdown
+              ```coffee
+              // Config as a `Gruntfile.coffee` task
+              // Can be a .coffee, .js, .json, .yml & more
+              uberscore:
+                path: 'source'
+                dstPath: 'build'
+                filez: ['**/*', (f)-> f isnt 'badfile']
+                copy: [/./]
+                runtimeInfo: ['!**/*', 'Logger.js']
+                dependencies: exports:
+                  bundle: 'lodash':  '_'
+                  root: 'uberscore': '_B'
+                resources: [
+                  ['+inject:VERSION', ['uberscore.js'],
+                   (module)-> module.beforeBody =
+                                "var VERSION = '0.0.15';"]
+                ]
+                template: banner: "// uBerscore v0.0.15"
+                optimize: 'uglify2'
+                watch: true
+              ```
+          .whyclear
+            pre.code.separator { derive: ['uberscore'], filez: [ /.*\.(coffee\.md|litcoffee|coffee)$/ ] }
+
+          .why.right
+            :markdown
+              ## Parent configs ? [Lets derive!](types-and-derive#deriving-behaviors)
+
+              The `'distribute'` config will:
+
+                * derive (i.e [deep inherit & modify](types-and-derive#deeper-behavior)) the above
+
+                * filter some [more filez](types-and-derive#arrayizeconcat)
+
+                * change template to ['combined'](combined-template)
+
+                * output to a different filename
+
+                * pass [more options to uglify2 / r.js](masterdefaultsconfig.coffee#build.optimize)
+
+              [See more examples](https://github.com/anodynos/uBerscore/blob/master/Gruntfile.coffee)
+
+          .why.left
+            :markdown
+              Lets derive some children
+
+              ```coffee
+              distribute:
+                derive: ['uberscore']
+                filez: ['!', /useRegExpsAsFileSpecs/]
+                template: 'combined'
+                dstPath: 'build/uberscore-combined.js'
+                optimize: uglify2: {more: uglify2: options}
+              ```
+
+          .whyclear
+
+            .technology
+              .how-get-started
+                h2 How do I get started?
+                block gettingStarted
 
       .span3
         .well.sidebar-nav
-          //a(href='https://flattr.com/submit/auto?user_id=anodynos&url=http%3A%2F%2Furequire.org')
-          //  img(alt='Flattr donate button', src='http://api.flattr.com/button/flattr-badge-large.png')
-          //a(href='https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=XZGDQKS96XGP8&lc=GR&item_name=uRequire%2eorg&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted')
-          //  img(alt='PayPayl donate button', src='https://www.paypalobjects.com/en_AU/i/btn/btn_donate_SM.gif')
+          a(href='https://flattr.com/submit/auto?user_id=anodynos&url=http%3A%2F%2Furequire.org')
+            img(alt='Flattr donate button', src='http://api.flattr.com/button/flattr-badge-large.png')
+          a(href='https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=XZGDQKS96XGP8&lc=GR&item_name=uRequire%2eorg&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted')
+            img(alt='PayPayl donate button', src='https://www.paypalobjects.com/en_AU/i/btn/btn_donate_SM.gif')
 
           .latest-version
-            h5 Latest Version
-            ul
-              li Stable: v0.6.7
-              ul.well-small
-                li Improved Parsing / extraction with Esprima (Mozilla Parser AST)
-                li Module manipulation (dependencies & code) BEFORE template is applied
-                li External Processes / LESS example support
-                li Build/Template options: [`bare`, `runtimeInfo`, `useStrict` & `globalWindow`] as flags & `filez` specs
-                li Added template `UMDplain`
+            :markdown
+              ##### [Latest Major Release **v0.6**.8 ](history)
+
+              * [Merging of code injections in modules & bundles](resourceconverters.coffee#inject-any-string-before-after-body), for ** *pre-minification* optimization**
+              * [Module manipulation](resourceconverters.coffee#manipulating-modules): inject, replace, delete deps & code
+              * Build options: [`bare`, `runtimeInfo`, `useStrict`, `globalWindow` and more], filtered per module
+              * Improved `combined` template, with merged sections & debug output
+              * `UMDplain` template
+              * Improved ResourceConverters
+              * Improved parsing / extraction with Esprima
 
           .social
             a.github(href='https://github.com/anodynos/urequire', alt='uRequire on GitHub')
@@ -86,7 +297,7 @@ block content
 
           .latest-news
             h3 Latest News
-            p <a href="/history">Release v0.6.7 - see History</a>
+            p <a href="/history">Release v0.6.8 - see History</a>
             //ul
               each article in news
                 li
