@@ -262,6 +262,45 @@ block content
                 dstPath: 'build/uberscore-combined.js'
                 optimize: uglify2: {more: uglify2: options}
               ```
+          .whyclear
+             pre.code.separator `_.extend(window.libraryExported, exports)`
+
+          .why.left
+            :markdown
+              ## How about *declarative*, either **per module** or **whole bundle**:
+
+              * have `window === global`, either in Browser or nodejs, at all times
+
+              * have `__isWeb`, `__isNode` & `__isAMD` always available
+
+              * inject `'use strict;'` on all modules or combined bundle's closure
+
+              * inject `exports` & `module` (along with `require`), so you never miss 'em & solve any [circular dependencies](http://stackoverflow.com/questions/4881059/how-to-handle-circular-dependencies-with-requirejs-amd) problems [with AMD](http://requirejs.org/docs/api.html#circular).
+
+              * and more :-)
+
+              All of these are tweaked to work in all templates, **with the miminum required generated code**.
+
+          .why.right
+            :markdown
+              ```
+              build:
+                globalWindow: false
+
+                runtimeInfo: ['Logger']
+
+                useStrict: true
+
+                injectExportsModule: ['uberscore', 'circular/Dependency']
+
+                bare: true
+
+                allNodeRequires: ['/data/preCached']
+
+                noRootExports: true
+
+                scanAllow: false
+              ```
 
           .whyclear
 
@@ -279,11 +318,11 @@ block content
 
           .latest-version
             :markdown
-              ##### [Latest Major Release **v0.6**.8 ](history)
+              ##### [Latest Major Release v0.6.9 ](history)
 
               * [Merging of code injections in modules & bundles](resourceconverters.coffee#inject-any-string-before-after-body), for ** *pre-minification* optimization**
               * [Module manipulation](resourceconverters.coffee#manipulating-modules): inject, replace, delete deps & code
-              * Build options: [`bare`, `runtimeInfo`, `useStrict`, `globalWindow` and more], filtered per module
+              * Build options: [`bare`, `runtimeInfo`, `useStrict`, `globalWindow`, `injectExportsModule` etc], filtered per module
               * Improved `combined` template, with merged sections & debug output
               * `UMDplain` template
               * Improved ResourceConverters
@@ -297,7 +336,7 @@ block content
 
           .latest-news
             h3 Latest News
-            p <a href="/history">Release v0.6.8 - see History</a>
+            p <a href="/history">Release v0.6.9 - see History</a>
             //ul
               each article in news
                 li
