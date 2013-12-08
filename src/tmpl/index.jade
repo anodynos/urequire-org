@@ -269,13 +269,13 @@ block content
             :markdown
               ## How about *declarative*, either **per module** or **whole bundle**:
 
-              * have `window === global`, either in Browser or nodejs, at all times
+              * [have `window === global`](masterdefaultsconfig.coffee#build.globalwindow), either in Browser or nodejs, at all times
 
-              * have `__isWeb`, `__isNode` & `__isAMD` always available
+              * [runtimeInfo](masterdefaultsconfig.coffee#build.runtimeinfo) like `__isWeb`, `__isNode` & `__isAMD` always available
 
-              * inject `'use strict;'` on all modules or combined bundle's closure
+              * [inject `'use strict;'`](masterdefaultsconfig.coffee#build.usestrict) on all/filtered modules or combined bundle's closure
 
-              * inject `exports` & `module` (along with `require`), so you never miss 'em & solve any [circular dependencies](http://stackoverflow.com/questions/4881059/how-to-handle-circular-dependencies-with-requirejs-amd) problems [with AMD](http://requirejs.org/docs/api.html#circular).
+              * [inject `exports` & `module`](masterdefaultsconfig.coffee#build.injectexportsmodule) (along with `require`), so you never miss 'em & solve any [circular dependencies](http://stackoverflow.com/questions/4881059/how-to-handle-circular-dependencies-with-requirejs-amd) problems [with AMD](http://requirejs.org/docs/api.html#circular).
 
               * and more :-)
 
