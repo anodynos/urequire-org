@@ -92,6 +92,12 @@ block content
                 // do stuff with dep1, dep2, dep3JSON
                 return {my:'module'}
               });
+
+              // mix well known features from both
+              define(['dep1'], function(dep1) {
+                exports.prop = dep1 + require('dep3');
+              });
+
               ```
 
           .whyclear
@@ -136,7 +142,7 @@ block content
 
 
           .whyclear
-             pre.code.separator [ '$coco', [ '**/*.co'], ((r)-> require('coco').compile r.source), '.js']
+             pre.code.separator [ '$coco', [ '**/*.co'], ((r)-> require('coco').compile r.converted), '.js']
 
           :markdown
 
@@ -156,23 +162,25 @@ block content
 
             Perform **any code manipulation** - eg remove debug code, inject initializations etc
 
-              * [Merge repeating statements](resourceconverters.coffee#bundlemergedcode): keep DRY, save space & speed when [`combined`](combined-template) in a single `.js`
-
-              ```
-              // unify / merge repeating statements
-              bundle: commonCode: 'var expect = chai.expect;'
-              ```
-
-              * Initialize [custom module code](resourceconverters.coffee#beforeBody), for common tasks:
-
+              * [Inject code before (or after) each module's body](resourceconverters.coffee#beforebody) eg. to initialize custom module code, for common module tasks:
               ```
               function(m) { m.beforeBody = 'var l = new _B.Logger("Logger" + m.dstFilename);' }
+
               ```
 
-            A [ResourceConverter](resourceconverters.coffee#what-is-a-resourceconverter) for our `.coco` files (included along with coffeescript, LiveScript, iced-coffee-script)
+              * Inject [common](MasterDefaultsConfig.coffee#bundle.commoncode) or [merged](resourceconverters.coffee#mergedcode) repeating statements: keep DRY, save space & speed when [`combined`](combined-template) in a single `.js`
+
+              ```
+              // each module will have before its main body, in all templates
+              bundle: commonCode: 'var expect = chai.expect;'
+
+              // added before beforeBody for all templates except 'combined', where its merged
+              function(m) { m.mergedCode = '"var p1 = myModule.p1, p2 = myModule.p2, ..., pN = myModule.pN;"' }
+              ```
+            Who needs bloated plugins ?  Here's a [ResourceConverter](resourceconverters.coffee#what-is-a-resourceconverter) for our [coco](https://github.com/satyr/coco) files (included along with [coffeescript](http://coffeescript.org), [LiveScript](http://livescript.net), [iced-coffee-script](http://maxtaco.github.io/coffee-script).
 
               ```coffee
-              [ '$coco', [ '**/*.co'], ((r)-> require('coco').compile r.source), '.js']
+              [ '$coco', [ '**/*.co'], ((r)-> require('coco').compile r.converted), '.js']
               ```
 
           .whyclear
@@ -248,7 +256,7 @@ block content
 
                 * pass [more options to uglify2 / r.js](masterdefaultsconfig.coffee#build.optimize)
 
-              [See more examples](https://github.com/anodynos/uBerscore/blob/master/Gruntfile.coffee)
+              See [more simple examples](masterdefaultsconfig.coffee#examples) and a [detailed real project](https://github.com/anodynos/uBerscore/blob/master/Gruntfile.coffee)
 
           .why.left
             :markdown
