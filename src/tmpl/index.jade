@@ -326,8 +326,9 @@ block content
 
           .latest-version
             :markdown
-              ##### [Latest Release v0.6.13 ](history)
+              ##### [Latest Release v0.6.14 ](history)
 
+              * [combined template allows `moduleName` (default is to define anonymously)](masterdefaultsconfig.coffee#build.template)
               * [Merging of code injections in modules & bundles](resourceconverters.coffee#inject-any-string-before-after-body), for ** *pre-minification* optimization**
               * [Module manipulation](resourceconverters.coffee#manipulating-modules): inject, replace, delete deps & code
               * Build options: [`bare`, `runtimeInfo`, `useStrict`, `globalWindow`, `injectExportsModule`, `noLoaderUMD` etc], filtered per module
@@ -344,7 +345,7 @@ block content
 
           .latest-news
             h3 Latest News
-            p <a href="/history">Release v0.6.13 - see History</a>
+            p <a href="/history">Release v0.6.14 - see History</a>
             //ul
               each article in news
                 li
