@@ -279,7 +279,7 @@ block content
 
               * [have `window === global`](masterdefaultsconfig.coffee#build.globalwindow), either in Browser or nodejs, at all times
 
-              * [runtimeInfo](masterdefaultsconfig.coffee#build.runtimeinfo) like `__isWeb`, `__isNode` & `__isAMD` always available
+              * [runtimeInfo](masterdefaultsconfig.coffee#build.runtimeinfo) have `__isWeb`, `__isNode` & `__isAMD` always available
 
               * [inject `'use strict;'`](masterdefaultsconfig.coffee#build.usestrict) on all/filtered modules or combined bundle's closure
 
@@ -326,8 +326,8 @@ block content
 
           .latest-version
             :markdown
-              ##### [Latest Release v0.6.14 ](history)
-
+              ##### [Latest Release v0.6.15 ](history)
+              * FIXED: AMD deps were missintepreted in nodejs template in some cases
               * [combined template allows `moduleName` (default is to define anonymously)](masterdefaultsconfig.coffee#build.template)
               * [Merging of code injections in modules & bundles](resourceconverters.coffee#inject-any-string-before-after-body), for ** *pre-minification* optimization**
               * [Module manipulation](resourceconverters.coffee#manipulating-modules): inject, replace, delete deps & code
@@ -345,7 +345,7 @@ block content
 
           .latest-news
             h3 Latest News
-            p <a href="/history">Release v0.6.14 - see History</a>
+            p <a href="/history">Release v0.6.15 - see History</a>
             //ul
               each article in news
                 li
