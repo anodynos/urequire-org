@@ -34,7 +34,7 @@ block content
             :markdown
               ## But javascript developers hate modules!
 
-              [Many](http://tomdale.net/2012/01/amd-is-not-the-answer) [woes](http://blog.nexua.org/requirejs-hell-amd-really-is-not-the-answer) on Module formats & *incombatibilities*:
+              [Many](http://tomdale.net/2012/01/amd-is-not-the-answer) [woes](http://blog.nexua.org/requirejs-hell-amd-really-is-not-the-answer) on Module formats & *incompatibilities*:
 
                * [Verbose syntax](https://medium.com/what-i-learned-building/5a31feb15e2), boilerplate ceremony & intricacies (especially AMD)
 
@@ -59,7 +59,7 @@ block content
 
                 * ~~ES6/Harmony~~ *when standard/parsers mature*
 
-              * Forget [the woes](synchronous-require#never-miss-a-dependency) or Module formats incompatiblities
+              * Forget [the woes](synchronous-require#never-miss-a-dependency) or Module formats incompatibilities
 
               * Eliminate boilerplate & *write modular Javascript code once, run everywhere* : [**Web/Script**, **Web/AMD**, **nodejs**](deployment)
 
@@ -119,12 +119,12 @@ block content
             ```
             The [same in a config](masterdefaultsconfig.coffee#bundle.dependencies.exports.root) is
 
-            ```
-            dependencies: { exports: { root: { 'uberscore': '_B' }}}`
+            ```js
+            dependencies: { exports: { root: { 'uberscore': '_B' }}}
             ```
 
             How about [exporting to your bundle](masterdefaultsconfig.coffee#bundle.dependencies.exports.bundle) only?
-            ```
+            ```js
             // export/inject `_` in (all) bundle's modules
             dependencies: { exports: { bundle: { 'lodash': '_' }}}
             ```
@@ -132,7 +132,7 @@ block content
             Want to replace **deps with mocks** or **alternative versions** ?
 
             [Inject](masterdefaultsconfig.coffee#bundle.dependencies.exports.bundle), [replace](MasterDefaultsConfig.coffee#bundle.dependencies.replace) or even [delete](resourceconverters.coffee#inject-replace-dependencies) dependencies with a simple declaration or a callback:
-            ```
+            ```js
             // underscore is dead, long live _
             dependencies: { replace: { lodash: 'underscore'}}
 
@@ -164,7 +164,7 @@ block content
 
               * [Inject code before (or after) each module's body](resourceconverters.coffee#beforebody) eg. to initialize custom module code, for common module tasks:
               ```
-              function(m) { m.beforeBody = 'var l = new _B.Logger("Logger" + m.dstFilename);' }
+              function(m) { m.beforeBody = "var l = new _B.Logger('" + m.dstFilename + "');"; }
 
               ```
 
@@ -224,14 +224,13 @@ block content
                 dstPath: 'build'
                 filez: ['**/*', (f)-> f isnt 'badfile']
                 copy: [/./]
-                runtimeInfo: ['!**/*', 'Logger.js']
+                runtimeInfo: ['!**/*', 'Logger']
                 dependencies: exports:
                   bundle: 'lodash':  '_'
                   root: 'uberscore': '_B'
                 resources: [
                   ['+inject:VERSION', ['uberscore.js'],
-                   (module)-> module.beforeBody =
-                                "var VERSION = '0.0.15';"]
+                   (m)-> m.beforeBody = "var VERSION = '0.0.15';" ]
                 ]
                 template: banner: "// uBerscore v0.0.15"
                 optimize: 'uglify2'
@@ -326,7 +325,7 @@ block content
 
           .latest-version
             :markdown
-              ##### [Latest Release v0.6.15 ](history)
+              ##### [Latest Release v0.6.18 ](history)
               * FIXED: AMD deps were missintepreted in nodejs template in some cases
               * [combined template allows `moduleName` (default is to define anonymously)](masterdefaultsconfig.coffee#build.template)
               * [Merging of code injections in modules & bundles](resourceconverters.coffee#inject-any-string-before-after-body), for ** *pre-minification* optimization**
@@ -345,7 +344,14 @@ block content
 
           .latest-news
             h3 Latest News
-            p <a href="/history">Release v0.6.15 - see History</a>
+            p <a href="/history">Release v0.6.18 - see History</a>
+
+            iframe(width='342', height='291', frameborder='0', allowfullscreen='', style='border:1px solid #CCC; border-width:1px 1px 0; margin-bottom:5px; max-width: 100%;', scrolling='no', marginheight='0', marginwidth='0', src='http://www.slideshare.net/slideshow/embed_code/35517697')
+            div(style='margin-bottom:5px')
+              strong
+                a(target='_blank', title='An introduction to uRequire', href='https://www.slideshare.net/anodynos/u-requiregreecejs') An introduction to uRequire
+
+
             //ul
               each article in news
                 li
