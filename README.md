@@ -10,7 +10,7 @@ uRequire.org Website (based on http://gruntjs.com/ Website, with lame changes)
 ## Setup Development
 
 1. `npm install`
-2. `git clone https://github.com/anodynos/urequire/wiki` to `../uRequire.wiki`
+2. `git clone https://github.com/anodynos/urequire/wiki` to `../urequire.wiki`
 3. `grunt build` - gets the latest docs, generates the site
 4. use ```grunt watch``` if you are editing templates or less files. (Note: `MasterDefaultsConfig.coffee.md` and `ResourceConverters.coffee.md` aren't part of the wiki, but https://github.com/anodynos/urequire - edit them there)
 

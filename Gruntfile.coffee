@@ -28,6 +28,8 @@ module.exports = (grunt) ->
           "build/css/main.css": "src/less/main.less"
 
     watch:
+      options: livereload: 35729
+
       less:
         files: "src/less/**/*.less"
         tasks: ["less:development"]
@@ -49,8 +51,8 @@ module.exports = (grunt) ->
         tasks: ["jade", "docs", "blog"] #"concat"
 
       docs:
-        files: "../uRequire.wiki/**"
-        tasks: ["docs"]
+        files: "../urequire/wiki/**"
+        tasks: ["docs" ]
     
     # compile page layouts
     jade:
@@ -86,7 +88,6 @@ module.exports = (grunt) ->
         node: true
         es5: true
 
-    
     # copy site source files
     copy:
       assets:
@@ -109,7 +110,8 @@ module.exports = (grunt) ->
     nodeunit:
       all: ["test/*_test.js"]
 
-    shell: coffee: command: "coffee -cb -o ./build ./src"
+    shell:
+      coffee: command: "coffee -cb -o ./build ./src"
 
   grunt.loadNpmTasks plugin for plugin in [
     "grunt-shell"
@@ -129,9 +131,8 @@ module.exports = (grunt) ->
   splitTasks = (tasks)-> if !_.isString tasks then tasks else (_.filter tasks.split(' '), (v)-> v)
   grunt.registerTask shortCut, splitTasks tasks for shortCut, tasks of {
     default:  "dev"
-    build:    "shell:coffee copy jade docs blog" #"concat" #"plugins",
+    build:    "clean shell:coffee copy jade docs blog less:development" #"concat" #"plugins",
     dev:      "jade docs serve"
-    full:     "clean build less:development" #"jshint",
     test:     "nodeunit"
     serve:    "server"
 
@@ -146,14 +147,3 @@ module.exports = (grunt) ->
     "alt-t": "t"
     "alt-d": "full"
   } when tasks
-
-
-# todo: report 'issue' to coffeescript
-#val1 = -> 'val1'
-#val2 = 'val2'
-#
-#myObjectCreation =
-#  'bar1': val1
-#   bar2 : val2
-#
-#console.log myObjectCreation

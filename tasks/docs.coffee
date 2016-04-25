@@ -5,7 +5,7 @@ module.exports = (grunt) ->
   jade = require "jade"
   highlighter = require "highlight.js"
   docs = require("./lib/docs").init grunt
-  wikiBase = "../uRequire.wiki/"
+  wikiBase = "../urequire/wiki/"
 
   ### Custom task to generate urequire documentation###
   grunt.registerTask "docs", "Compile uRequire Docs to HTML", ->

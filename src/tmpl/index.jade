@@ -10,7 +10,7 @@ block content
         .hero-unit
           .home-header
             h1
-              span.tag-line The JavaScript Universal Module & Resource Converter
+              span.tag-line The JavaScript Universal Module Converter & Resource Builder
 
           .whyclear
             pre.code.separator define(['Modular', 'Development', 'Deployment'], function(){ return 'that just works, painlessly!' });
@@ -327,17 +327,10 @@ block content
 
           .latest-version
             :markdown
-              ##### [Latest Release v0.6.19 ](history)
-              * `require('./some/dirName')` is converted to `require('./some/dirName/index')` so it works on AMD / UMD
-              * FIXED: AMD deps were missintepreted in nodejs template in some cases
-              * [combined template allows `moduleName` (default is to define anonymously)](masterdefaultsconfig.coffee#build.template)
-              * [Merging of code injections in modules & bundles](resourceconverters.coffee#inject-any-string-before-after-body), for ** *pre-minification* optimization**
-              * [Module manipulation](resourceconverters.coffee#manipulating-modules): inject, replace, delete deps & code
-              * Build options: [`bare`, `runtimeInfo`, `useStrict`, `globalWindow`, `injectExportsModule`, `noLoaderUMD` etc], filtered per module
-              * Improved `combined` template, with merged sections & debug output
-              * `UMDplain` template
-              * Improved ResourceConverters
-              * Improved parsing / extraction with Esprima
+              ##### [Latest Release v0.7.0 ](history)
+              * New: ResourceConverters can be asynchronous, with promise or callback
+              * New: afterBuild
+              * Improved `combined` template
 
           .social
             a.github(href='https://github.com/anodynos/urequire', alt='uRequire on GitHub')
@@ -347,12 +340,12 @@ block content
 
           .latest-news
             h3 Latest News
-            p <a href="/history">Release v0.6.19 - see History</a>
+            p <a href="/history">Release v0.7.0 - see History</a>
 
-            iframe(width='342', height='291', frameborder='0', allowfullscreen='', style='border:1px solid #CCC; border-width:1px 1px 0; margin-bottom:5px; max-width: 100%;', scrolling='no', marginheight='0', marginwidth='0', src='http://www.slideshare.net/slideshow/embed_code/35517697')
-            div(style='margin-bottom:5px')
-              strong
-                a(target='_blank', title='An introduction to uRequire', href='https://www.slideshare.net/anodynos/u-requiregreecejs') An introduction to uRequire
+            //iframe(width='342', height='291', frameborder='0', allowfullscreen='', style='border:1px solid #CCC; border-width:1px 1px 0; margin-bottom:5px; max-width: 100%;', scrolling='no', marginheight='0', marginwidth='0', src='http://www.slideshare.net/slideshow/embed_code/35517697')
+            //div(style='margin-bottom:5px')
+            //  strong
+            //    a(target='_blank', title='An introduction to uRequire', href='https://www.slideshare.net/anodynos/u-requiregreecejs') An introduction to uRequire
 
 
             //ul
