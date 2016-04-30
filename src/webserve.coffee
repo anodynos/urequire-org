@@ -56,6 +56,6 @@ app.get "*", (req, res, next) ->
       next()
 
 
-module.exports = (port) ->
-  console.log "Starting a server on port: " + port
-  app.listen port
+module.exports = (config) ->
+  console.log "Starting a server at `#{config.host}` on port: " + config.port
+  app.listen config.port

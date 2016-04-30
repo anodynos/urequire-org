@@ -72,7 +72,7 @@ app.get("*", function(req, res, next) {
   });
 });
 
-module.exports = function(port) {
-  console.log("Starting a server on port: " + port);
-  return app.listen(port);
+module.exports = function(config) {
+  console.log(("Starting a server at `" + config.host + "` on port: ") + config.port);
+  return app.listen(config.port);
 };
