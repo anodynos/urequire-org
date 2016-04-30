@@ -375,7 +375,7 @@ Because RCs work best in chain, your RCs should read <code>converted</code> inst
 </li>
 <li>make <code>stuff/myModule</code> available as an <a href="masterdefaultsconfig.coffee#bundle.dependencies.imports"><code>bundle.dependencies.imports</code></a>, with the <code>myModule</code> identifier.</li>
 </ul>
-<pre><code> dependencies: exports: bundle: { <span class="string">'stuff/myModule'</span>: <span class="string">'myModule'</span> }</code></pre>
+<pre><code> dependencies: imports: { <span class="string">'stuff/myModule'</span>: <span class="string">'myModule'</span> }</code></pre>
 <p>That&#39;s it!</p>
 <h4><a class="anchor" href="#manipulate-replace-ast-code" id="manipulate-replace-ast-code">Manipulate/replace AST code</a></h4>
 <h4><a class="anchor" href="#replacecode" id="replacecode"><code>replaceCode()</code></a></h4>

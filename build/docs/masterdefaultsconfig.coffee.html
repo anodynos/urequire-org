@@ -782,9 +782,9 @@ uberscore:                    <span class="comment"># serves as 'name' &amp; con
   filez: [ <span class="string">'!**deepExtend.coffee'</span> ]
   dstPath: <span class="string">'build/uberscore-min.js'</span>
   dependencies:
-   exports: bundle: [
+    imports: [
       [<span class="literal">null</span>], <span class="string">'underscore'</span>, <span class="string">'agreement/isAgree'</span>]
-   replace: <span class="string">'underscore'</span>: [<span class="string">'lodash'</span>]
+    replace: <span class="string">'underscore'</span>: [<span class="string">'lodash'</span>]
   resources: [
   [
      <span class="string">'+remove:debug/deb &amp; deepExtend'</span>, [<span class="regexp">/./</span>]
