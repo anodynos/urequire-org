@@ -3,3 +3,5 @@ src/
 tasks/
 test/
 tmp/
+DRAFT
+node_modules

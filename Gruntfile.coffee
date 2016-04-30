@@ -1,8 +1,8 @@
 module.exports = (grunt) ->
   _ = grunt.util._
-  
+
   grunt.initConfig
-    
+
     server_port: 8080
 
     # clean directories
@@ -53,7 +53,7 @@ module.exports = (grunt) ->
       docs:
         files: "../urequire/wiki/**"
         tasks: ["docs" ]
-    
+
     # compile page layouts
     jade:
       notfound:
@@ -130,20 +130,8 @@ module.exports = (grunt) ->
   ### shortcuts generation ###
   splitTasks = (tasks)-> if !_.isString tasks then tasks else (_.filter tasks.split(' '), (v)-> v)
   grunt.registerTask shortCut, splitTasks tasks for shortCut, tasks of {
-    default:  "dev"
+    default:  "build"
     build:    "clean shell:coffee copy jade docs blog less:development" #"concat" #"plugins",
-    dev:      "jade docs serve"
+    dev:      "jade docs"
     test:     "nodeunit"
-    serve:    "server"
-
-    # generic shortcuts
-    "c": "clean"
-    "d": "full"
-    "t": "test"
-    "b": "build"
-    # IDE shortcuts
-    "alt-c": "c"
-    "alt-b": "b"
-    "alt-t": "t"
-    "alt-d": "full"
   } when tasks

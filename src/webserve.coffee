@@ -25,20 +25,13 @@ app.configure ->
   app.use app.router
   app.use express.static("build")
 
-  app.use (req, res) -> res.status(404).sendfile "build/404.html"
+  app.use (req, res) ->
+    res.status(404).sendfile "build/404.html"
 
   app.use express.errorHandler(
     dumpExceptions: false
     showStack: false
   )
-
-
-###
-Server configuration
-###
-port = '80' #process.env.PORT or
-app.listen port
-console.log "Starting a server on port: " + port
 
 ###
 express app router
@@ -62,3 +55,7 @@ app.get "*", (req, res, next) ->
     else
       next()
 
+
+module.exports = (port) ->
+  console.log "Starting a server on port: " + port
+  app.listen port
