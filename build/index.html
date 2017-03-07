@@ -71,19 +71,19 @@ define([<span class="string">'some/dirName'</span>,<span class="string">'dep2'</
 define([<span class="string">'my/dep1'</span>], <span class="keyword">function</span>(dep1) {
     exports.prop = dep1 + require(<span class="string">'./your/dep3'</span>);
 });</code></pre>
-</div><div class="whyclear"><pre class="code separator">dependencies: exports: bundle: { 'lodash': '_', 'backbone': 'Backbone'}</pre></div><!--.why--><h2><a class="anchor" href="#a-modules-dependencies-aware-masterdefaultsconfig.coffee-bundle.dependencies-builder." id="a-modules-dependencies-aware-masterdefaultsconfig.coffee-bundle.dependencies-builder.">A <a href="/masterdefaultsconfig.coffee#bundle.dependencies">Modules &amp; Dependencies aware</a> builder.</a></h2>
+</div><div class="whyclear"><pre class="code separator">dependencies: imports: bundle: { 'lodash': '_', 'backbone': 'Backbone'}</pre></div><!--.why--><h2><a class="anchor" href="#a-modules-dependencies-aware-masterdefaultsconfig.coffee-bundle.dependencies-builder." id="a-modules-dependencies-aware-masterdefaultsconfig.coffee-bundle.dependencies-builder.">A <a href="/masterdefaultsconfig.coffee#bundle.dependencies">Modules &amp; Dependencies aware</a> builder.</a></h2>
 <p><a href="/exporting-modules">Exporting modules</a> to <code>window</code>/<code>global</code> variables (like <code>window._</code>, <code>window.$</code> etc), demystified and with no boilerplate.</p>
 <p>Want <a href="/generated-noconflict-functionality"><code>noConflict()</code></a>, baked in? Its a simple declaration away.</p>
 <pre><code class="lang-js"><span class="comment">// file `uberscore.js` - export it to root (`window`) as `_B`</span>
 ({ urequire: { rootExports: <span class="string">'_B'</span>, noConflict: <span class="literal">true</span> }});
 module.exports = {...}</code></pre>
-<p>The <a href="/masterdefaultsconfig.coffee#bundle.dependencies.exports.root">same in a config</a> is</p>
-<pre><code class="lang-js">dependencies: { exports: { root: { <span class="string">'uberscore'</span>: <span class="string">'_B'</span> }}}</code></pre>
-<p>How about <a href="/masterdefaultsconfig.coffee#bundle.dependencies.exports.bundle">exporting to your bundle</a> only?</p>
-<pre><code class="lang-js"><span class="comment">// export/inject `_` in (all) bundle's modules</span>
-dependencies: { exports: { bundle: { <span class="string">'lodash'</span>: <span class="string">'_'</span> }}}</code></pre>
+<p>The <a href="/masterdefaultsconfig.coffee#bundle.dependencies.exportsRoot">same in a config</a> is</p>
+<pre><code class="lang-js">dependencies: { imports: { root: { <span class="string">'uberscore'</span>: <span class="string">'_B'</span> }}}</code></pre>
+<p>How about <a href="/masterdefaultsconfig.coffee#bundle.dependencies.imports.bundle">exporting to your bundle</a> only?</p>
+<pre><code class="lang-js"><span class="comment">// inject `lodash` as `_` in (all) bundle's modules</span>
+dependencies: { imports: { <span class="string">'lodash'</span>: <span class="string">'_'</span> }}</code></pre>
 <p>Want to replace <strong>deps with mocks</strong> or <strong>alternative versions</strong> ?</p>
-<p><a href="/masterdefaultsconfig.coffee#bundle.dependencies.exports.bundle">Inject</a>, <a href="/MasterDefaultsConfig.coffee#bundle.dependencies.replace">replace</a> or even <a href="/resourceconverters.coffee#inject-replace-dependencies">delete</a> dependencies with a simple declaration or a callback:</p>
+<p><a href="/masterdefaultsconfig.coffee#bundle.dependencies.imports.bundle">Inject</a>, <a href="/MasterDefaultsConfig.coffee#bundle.dependencies.replace">replace</a> or even <a href="/resourceconverters.coffee#inject-replace-dependencies">delete</a> dependencies with a simple declaration or a callback:</p>
 <pre><code class="lang-js"><span class="comment">// underscore is dead, long live _</span>
 dependencies: { replace: { lodash: <span class="string">'underscore'</span>}}
 
@@ -128,9 +128,9 @@ bundle: commonCode: <span class="string">'var expect = chai.expect;'</span>
 </li>
 <li><p><a href="/masterdefaultsconfig.coffee#build.runtimeInfo">Allow <code>runtimeInfo</code></a> (eg <code>__isNode</code>, <code>__isAMD</code>) selectively</p>
 </li>
-<li><p><a href="/masterdefaultsconfig.coffee#bundle.dependencies.exports.bundle">inject</a> <code>lodash</code> dep in each module as <code>_</code></p>
+<li><p><a href="/masterdefaultsconfig.coffee#bundle.dependencies.imports.bundle">inject</a> <code>lodash</code> dep in each module as <code>_</code></p>
 </li>
-<li><p><a href="/masterdefaultsconfig.coffee#bundle.dependencies.exports.root">export a global</a> <code>window._B</code> with a <code>noConflict()</code></p>
+<li><p><a href="/masterdefaultsconfig.coffee#bundle.dependencies.rootExports">export a global</a> <code>window._B</code> with a <code>noConflict()</code></p>
 </li>
 <li><p><a href="/resourceconverters.coffee#inject-any-string-before-after-body">inject</a> <code>&#39;var VERSION =...&#39;</code> before body of <code>uberscore.js</code></p>
 </li>
@@ -149,7 +149,7 @@ uberscore:
   filez: [<span class="string">'**/*'</span>, (f)-&gt; f isnt <span class="string">'badfile'</span>]
   copy: [<span class="regexp">/./</span>]
   runtimeInfo: [<span class="string">'!**/*'</span>, <span class="string">'Logger'</span>]
-  dependencies: exports:
+  dependencies: imports:
     bundle: <span class="string">'lodash'</span>:  <span class="string">'_'</span>
     root: <span class="string">'uberscore'</span>: <span class="string">'_B'</span>
   resources: [
@@ -189,7 +189,7 @@ uberscore:
 </li>
 <li><p><a href="/masterdefaultsconfig.coffee#build.usestrict">inject <code>&#39;use strict;&#39;</code></a> on all/filtered modules or combined bundle&#39;s closure</p>
 </li>
-<li><p><a href="/masterdefaultsconfig.coffee#build.injectexportsmodule">inject <code>exports</code> &amp; <code>module</code></a> (along with <code>require</code>), so you never miss &#39;em &amp; solve any <a href="http://stackoverflow.com/questions/4881059/how-to-handle-circular-dependencies-with-requirejs-amd">circular dependencies</a> problems <a href="http://requirejs.org/docs/api.html#circular">with AMD</a>.</p>
+<li><p><a href="/masterdefaultsconfig.coffee#build.injectexportsmodule">inject <code>imports</code> &amp; <code>module</code></a> (along with <code>require</code>), so you never miss &#39;em &amp; solve any <a href="http://stackoverflow.com/questions/4881059/how-to-handle-circular-dependencies-with-requirejs-amd">circular dependencies</a> problems <a href="http://requirejs.org/docs/api.html#circular">with AMD</a>.</p>
 </li>
 <li><p>and more :-)</p>
 </li>

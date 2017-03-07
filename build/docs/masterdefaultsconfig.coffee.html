@@ -97,27 +97,32 @@ It is the module just kicks off the app and/or requires all your other library m
 <p>All information related to dependencies handling is listed here.</p>
 <pre><code>  dependencies:</code></pre>
 <h4><a class="anchor" href="#bundle.dependencies.imports" id="bundle.dependencies.imports">bundle.dependencies.imports</a></h4>
-<p>Allows you to <em>export</em> or <a href="resourceconverters.coffee#inject-replace-dependencies"><em>inject</em></a> (i.e have available) specific dependencies (other modules) throughout the <em>whole bundle</em>, under the given variable name(s).</p>
-<p>Eg you want to access <code>&#39;underscore&#39;</code> from  <code>_</code>, <code>&#39;backbone&#39;</code> from <code>Backbone</code> etc, from all modules, without having to declare it in each module.</p>
-<p>Effectively this means that each module will have an <em>injection</em> of all <code>dependencies.imports</code>, so you don&#39;t have to list them in each module.</p>
+<p>Allows you to <em>import</em> or better <em>inject</em> via <a href="resourceconverters.coffee#injectdeps"><code>Module.injectdeps()</code></a> specific dependencies (i.e other modules) throughout the <em>whole bundle</em>, under the given variable name(s).</p>
+<p>The use case is when you want to access <code>lodash</code> from  as <code>_</code>, <code>backbone</code> as <code>Backbone</code> and even <code>myUtils/foobar</code> as <code>foobar</code> in all your other modules, without having to declare a boring <code>var _ = require(&#39;lodash&#39;)</code> in each and every module.</p>
+<p>Each module receives an <em>injection</em> of all the <code>dependencies.imports</code>, so you don&#39;t have to list them in each module.</p>
 <p>@example</p>
-<pre><code>{ <span class="string">'underscore'</span>: <span class="string">'_'</span>,
- <span class="string">'jquery'</span>: [<span class="string">"$"</span>, <span class="string">"jQuery"</span>],
- <span class="string">'models/PersonModel'</span>: [<span class="string">'persons'</span>, <span class="string">'personsModel'</span>] }</code></pre>
+<pre><code>dependencies: { 
+  imports: { 
+   <span class="string">'lodash'</span>: <span class="string">'_'</span>,
+   <span class="string">'jquery'</span>: [<span class="string">"$"</span>, <span class="string">"jQuery"</span>],
+   <span class="string">'myUtils/foobar'</span>: [<span class="string">'foobar'</span>, <span class="string">'utilsFoobar'</span>], 
+   <span class="string">'common/config'</span>: <span class="string">'config'</span>
+}}</code></pre>
 <p>will give you :</p>
 <ul>
-<li><p>Injection of Modules / dependencies <code>&#39;underscore&#39;</code>, <code>&#39;jquery&#39;</code>, and <code>&#39;models/PersonModel&#39;</code> to each module in the bundle.</p>
+<li><p>Injection of Modules / dependencies <code>&#39;lodash&#39;</code>, <code>&#39;jquery&#39;</code>, <code>&#39;myUtils/foobar&#39;</code> and <code>&#39;common/config&#39;</code> to each module in the bundle, BUT avoiding circular references, so your <em>bundle&#39;s modules</em> listed in <code>dependencies.imports</code> (like <code>&#39;myUtils/foobar&#39;</code> and <code>&#39;common/config&#39;</code>) will not be injected in each other at all, but will receive all the local deps like <code>&#39;lodash&#39;</code>. See more details on this and how injection works in <a href="resourceconverters.coffee#injectdeps"><code>Module.injectdeps()</code></a>.    </p>
 </li>
-<li><p>Access of <code>_</code>, <code>$</code>, <code>jQuery</code>, <code>persons</code> &amp; <code>personsModel</code> variables everywhere, without listing them once on any module&#39;s code.</p>
+<li><p>Accessing of <code>_</code>, <code>$</code>, <code>jQuery</code> and <code>&#39;foobar&#39;</code> and <code>&#39;common&#39;</code> variables everywhere.</p>
 </li>
 <li><p>Working the same way on all templates, on any environment (AMD, nodejs, Web/Script).</p>
 </li>
-<li><p>Saving space: on <a href="combined-template">&#39;combined&#39; template</a>, they are listed &amp; loaded only once, made available only within bundle&#39;s &#39;combined&#39; closure.</p>
+<li><p>Saving space: on <a href="combined-template">&#39;combined&#39; template</a>, all <code>dependencies.imports</code> are required (&amp; loaded) only once, made available from within the bundle&#39;s &#39;combined&#39; closure.</p>
 </li>
 </ul>
 <p>@type <a href="types-and-derive#depsvars">depsVars</a></p>
 <p>@derive <a href="types-and-derive#dependenciesbindings">dependenciesbindings</a></p>
 <p>@note the <a href="types-and-derive#shortcut-depsvars-types">shortcut depsvars format</a>, can also be used (eg <code>[&#39;underscore&#39;, &#39;jquery&#39;, &#39;models/PersonModel&#39;]</code>), in which case the <a href="types-and-derive#inferred-binding-idenifiers">vars are inferred]</a>.</p>
+<p>@see <a href="resourceconverters.coffee#injectdeps"><code>Module.injectdeps()</code></a> which powers <code>dependencies.imports</code> - use it to customize even more the dependency injection behavior.      </p>
 <p>@alias <code>bundleExports</code>, <code>exports.bundle</code> both DEPRECATED</p>
 <pre><code>    imports: {}</code></pre>
 <h4><a class="anchor" href="#bundle.dependencies.rootexports" id="bundle.dependencies.rootexports">bundle.dependencies.rootExports</a></h4>
@@ -249,7 +254,7 @@ It is the module just kicks off the app and/or requires all your other library m
 <hr>
 <h2><a class="anchor" href="#bundle.resources" id="bundle.resources">bundle.resources</a></h2>
 <p>An Array of <a href="resourceconverters.coffee"><strong>ResourceConverters (RC)</strong></a> (eg compilers, transpilers etc), that perform a conversion from one resource format (eg coffeescript, teacup) to another <strong>converted</strong> format (eg javascript, HTML).</p>
-<p><strong>ResourceConverters</strong> is a generic and extendible in-memory conversions workflow, that is trivial to use and extend with your own, perhaps one-liner, converters (eg <code>[&#39;$coco&#39;, [ &#39;**/*.co&#39;], ((r)-&gt; (require &#39;coco&#39;).compile r.converted), &#39;.js&#39;]</code> is an RC).</p>
+<p><strong>ResourceConverters</strong> is a generic and extendible in-memory conversions workflow, that is trivial to use and extend with your own, perhaps one-liner, converters (eg <code>[&#39;$coco&#39;, [ &#39;**/*.co&#39;], ((r) -&gt; (require &#39;coco&#39;).compile r.converted), &#39;.js&#39;]</code> is an RC).</p>
 <p>The workflow unobtrusively uses <code>bundle</code> &amp; <code>build</code> info like paths and is a highly <em>in-memory-pipeline</em> and <em>read-convert-and-save only-when-needed</em> workflow, with an integrated <a href="masterdefaultsconfig.coffee#build.watch"><code>build.watch</code></a> capability (grunt or standalone).</p>
 <p>Read all about them in <a href="resourceconverters.coffee"><strong>ResourceConverters.coffee</strong></a>.</p>
 <h3><a class="anchor" href="#notes-on-rcs:" id="notes-on-rcs:">Notes on RCs:</a></h3>
@@ -314,14 +319,14 @@ resources: [
  -&gt; tc = @(<span class="string">'someRC'</span>).clone(); tc.filez.push(<span class="string">'**/*.someExt'</span>); tc
 
  <span class="comment"># define a new RC, with the fancy [] RC-spec</span>
- [<span class="string">'$koko'</span>, [<span class="string">'**/*.ko'</span>], ((m)-&gt; require(<span class="string">'koko'</span>).compile m.converted), <span class="string">'.js'</span>]
+ [<span class="string">'$koko'</span>, [<span class="string">'**/*.ko'</span>], ((m) -&gt; require(<span class="string">'koko'</span>).compile m.converted), <span class="string">'.js'</span>]
 
  <span class="comment"># define a new RC, with the grandaddy {} RC-spec</span>
  {
    name: <span class="string">'kookoo'</span>
    type: <span class="string">'module'</span>
    filez: [ <span class="string">'**/*.koo'</span>]
-   convert: (m)-&gt; require(<span class="string">'kookoo'</span>).compile m.source
+   convert: (m) -&gt; require(<span class="string">'kookoo'</span>).compile m.source
    convFilename: <span class="string">'.js'</span>
  }
 
@@ -676,7 +681,7 @@ Highly experimental and for hard core debugging only!</p>
 <li><p>on combined template, only the <code>combined.js</code> file (and possible leftover temp directory) is deleted (cause your directory might contain other files).</p>
 </li>
 </ul>
-<p>If <code>clean</code> is a <a href="types-and-derive#filespecs">filesspec type</a> (eg `clean: [&#39;some/**/file.someext&#39;, &#39;!&#39;, (f)-&gt; f is &#39;dontDeleteMe.txt&#39;]), only files passing the filespecs filter are deleted in any case (along with any possible leftover combinedFile temp directory).</p>
+<p>If <code>clean</code> is a <a href="types-and-derive#filespecs">filesspec type</a> (eg `clean: [&#39;some/**/file.someext&#39;, &#39;!&#39;, (f) -&gt; f is &#39;dontDeleteMe.txt&#39;]), only files passing the filespecs filter are deleted in any case (along with any possible leftover combinedFile temp directory).</p>
 <p>On subsequent partial builds, <strong>no files are deleted</strong>.</p>
 <pre><code>  clean: <span class="literal">true</span></code></pre>
 <h2><a class="anchor" href="#build.deleteerrored" id="build.deleteerrored">build.deleteErrored</a></h2>
@@ -732,7 +737,7 @@ uberscore:                    <span class="comment"># serves as 'name' &amp; con
   resources: [                <span class="comment"># simple manipulative concat</span>
     [ <span class="string">'+inject:VERSION'</span>,      <span class="comment"># isBeforeTemplate: true, i.e AST is parsed &amp; a module is there!</span>
       [<span class="string">'uberscore.js'</span>],       <span class="comment"># only on this module, inject the following</span>
-      (m)-&gt; m.beforeBody = <span class="string">"var VERSION = '0.0.15';"</span>]
+      (m) -&gt; m.beforeBody = <span class="string">"var VERSION = '0.0.15';"</span>]
   ]
   template: banner: <span class="string">"// uBerscore v0.0.15"</span>
   clean: <span class="literal">true</span>
@@ -788,7 +793,7 @@ uberscore:                    <span class="comment"># serves as 'name' &amp; con
   resources: [
   [
      <span class="string">'+remove:debug/deb &amp; deepExtend'</span>, [<span class="regexp">/./</span>]
-     (m)-&gt;
+     (m) -&gt;
        <span class="comment"># match each of these code *skeletons*</span>
        <span class="keyword">for</span> code <span class="keyword">in</span> [ <span class="string">'if (l.deb()){}'</span>, <span class="string">'if (this.l.deb()){}'</span>,
                      <span class="string">'l.debug()'</span>, <span class="string">'this.l.debug()'</span>]

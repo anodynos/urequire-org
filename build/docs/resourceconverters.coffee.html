@@ -229,9 +229,9 @@ RCs should be as gneric as possible. Whether its <code>filez</code> actual match
 <p><code>copy()</code> always makes sure that <strong>no redundant copies are made</strong>: when the destination file exists, it checks nodejs&#39;s <code>fs.stat</code> <code>&#39;mtime&#39;</code>, <code>&#39;size&#39;</code> and copies over only if either is changed, and skips if they are the same. It returns <code>true</code> if a copy was made, <code>false</code> if it was skipped.</p>
 <p>@example</p>
 <p>With <code>copy()</code> you can have a converter that simply copies each file in <code>RC.filez</code>, eg:</p>
-<p><code>[&#39;@copyVendorJs&#39;, [&#39;vendorJs/**/*.js&#39;], (r)-&gt; r.copy()]</code></p>
+<p><code>[&#39;@copyVendorJs&#39;, [&#39;vendorJs/**/*.js&#39;], (r) -&gt; r.copy()]</code></p>
 <p>or copies them renamed, from <code>bundle.path</code> to <code>build.dstPath</code> eg</p>
-<p><code>[&#39;@copyRenamedVendorJs&#39;, [&#39;vendorJs/**/*.js&#39;], (r)-&gt; r.copy(undefined, &#39;renamed_&#39; + e.dstFilename)]</code></p>
+<p><code>[&#39;@copyRenamedVendorJs&#39;, [&#39;vendorJs/**/*.js&#39;], (r) -&gt; r.copy(undefined, &#39;renamed_&#39; + e.dstFilename)]</code></p>
 <h4><a class="anchor" href="#requireclean" id="requireclean"><code>requireClean()</code></a></h4>
 <p>A utility <code>function(moduleName)</code> that is a wrapper to nodejs&#39;s <code>require(moduleName)</code>, that makes sure the cached module (and its dependencies) is cleared before loading it.</p>
 <p>Its useful if you want to load a file (that changed on disk&#39;s <a href="masterdefaultsconfig.coffee#build.dstpath"><code>bundle.path</code></a>) as a nodejs module. The problem with plain <code>require</code> is that nodejs modules are cached and don&#39;t reload when file on disk changes.</p>
@@ -429,7 +429,7 @@ statement2;
     <span class="string">'+remove:debug/deb'</span>, [<span class="regexp">/./</span>]
     <span class="comment"># perform the replacement / deletion</span>
     <span class="comment"># note: return value is ignored in '+' `isBeforeTemplate` RCs</span>
-    (modyle)-&gt; modyle.replaceCode <span class="string">'if (l.deb()){}'</span>
+    (modyle) -&gt; modyle.replaceCode <span class="string">'if (l.deb()){}'</span>
   ]
   ...  
 ]</code></pre>
@@ -477,13 +477,35 @@ statement2;
 <p>or</p>
 <pre><code>  modyle.injectDeps([<span class="string">'lodash'</span>, <span class="string">'models/Person'</span>])</code></pre>
 <p>that <a href="masterdefaultsconfig.coffee#inferred-binding-idenifiers">infers binding idenifiers</a>.</p>
-<p>The deps are are always given in <a href="flexible-path-conventions#bundlerelative-vs-filerelative-paths">bundleRelative</a> format. In general it makes sure that :</p>
+<p>The deps are are always given in <a href="flexible-path-conventions#bundlerelative-vs-filerelative-paths">bundleRelative</a> format. It makes sure that :</p>
 <ul>
 <li><p>not two same-named parameters are injected - the &#39;late arrivals&#39; bindings are simply ignored (with a warning). So if a Module already has a parameter <code>&#39;_&#39;</code> and you try to inject <code>&#39;lodash&#39;:&#39;_&#39;</code>, it wont be injected at all.</p>
 </li>
 <li><p>Not injecting a self-dependency. If you are at module <code>&#39;agreements/isAgree&#39;</code>, trying to inject dependency <code>&#39;agreements/isAgree&#39;</code> will be ignored (without a warning, only a debug message).</p>
 </li>
 </ul>
+<p><em>Circular dependencies</em>:  </p>
+<p>Dependencies are also NOT injected in these two cases that would create Circular dependencies: </p>
+<ul>
+<li><p>In other injected bundle dependencies of <code>depVars</code> in this <code>modyle.injectDeps(depVars)</code> call. This makes sure that in</p>
+<pre><code>modyle.injectDeps({
+  <span class="string">'lodash'</span>: <span class="string">'_'</span>,
+  <span class="string">'utils/MyError'</span>: <span class="string">'MyError'</span>,
+  <span class="string">'utils/functionalUtils'</span>: <span class="string">'functionalUtils'</span>
+});</code></pre>
+<p>both <code>utils/MyError</code> &amp; <code>utils/functionalUtils</code> will NOT be injected in each other, BUT <code>&#39;lodash&#39;</code> will be (cause its a <code>local</code> and not part of your bundles modules) . </p>
+</li>
+<li><p>when the module A that is the dependency to be injected in module B, is already a dependency to B. So consider a call to </p>
+</li>
+</ul>
+<pre><code>  modyle.injectDeps({<span class="string">'config'</span>: <span class="string">'config'</span> });</code></pre>
+<p>where <code>config.js</code> module is </p>
+<pre><code>  <span class="reserved">var</span> defaultConfig = require(<span class="string">'common/defaultConfig'</span>);
+
+  module.exports = helpers.deepMerge(defaultConfig, {foo: {bar: <span class="string">''</span>}});</code></pre>
+<p>and we are about to inject <code>config.js</code> as a dependency into <code>common/defaultConfig</code>. In this case, if we injected we would have created a circular dependency which is not what we intended, so urequire will make the decision NOT to inject.</p>
+<p>In these two case, you have to do it explicitly <code>var a = require(&#39;some/other/injected/mod&#39;)</code> and know what you&#39;re doing. Also you can <code>modyle.injectDeps({&#39;config&#39;: &#39;config&#39; }, true);</code> to force circular deps to be injected.</p>
+<p>See <a href="https://github.com/anodynos/uRequire/issues/65">https://github.com/anodynos/uRequire/issues/65</a> and <a href="https://github.com/anodynos/urequire-imports-dependencies">https://github.com/anodynos/urequire-imports-dependencies</a> for more details. </p>
 <p>@note: uRequire doesn&#39;t enforce that the injected dependency is valid, for example whether it exists in the bundle - but you &#39;ll get an error report in the end.</p>
 <p>@note <code>injectDeps()</code> is used internally to inject <a href="masterdefaultsconfig.coffee#bundle.dependencies.imports"><code>dependencies.imports</code></a> (on templates that actually need this injection, i.e all except <a href="combined-template">&#39;combined&#39;</a>).</p>
 <p>@note If you &#39;re injecting a dep in all modules, consider adding to <a href="masterdefaultsconfig.coffee#bundle.dependencies.imports"><code>dependencies.imports</code></a>, to save size/speed on <a href="combined-template">&#39;combined&#39; template</a>.</p>
@@ -532,10 +554,10 @@ statement2;
       <span class="comment"># could have `undefined` in convert's place</span>
       <span class="comment"># we use m.converted (which defaults to m.source), cause</span>
       <span class="comment"># you never know what super duper RC conversion run before!</span>
-      convert: (modyle)-&gt; modyle.converted
+      convert: (modyle) -&gt; modyle.converted
 
       <span class="comment"># convert .js | .javascript to .js</span>
-      convFilename: (srcFilename)-&gt;
+      convFilename: (srcFilename) -&gt;
         require(<span class="string">'upath'</span>).changeExt srcFilename, <span class="string">'js'</span>
 
       <span class="comment"># not needed, we have '$' flag to denote `type: 'module'`</span>
@@ -552,7 +574,7 @@ It is by default loaded as a separate <code>urequire-rc-coffee-script</code> nod
 <p>The following two are for <a href="https/github.com/anodynos/urequire-rc-iced-coffee-script">&quot;iced-coffee-script&quot;</a> &amp; <a href="https/github.com/anodynos/urequire-rc-coco">&quot;coco&quot;</a>.</p>
 <pre><code>    <span class="comment">#'iced-coffee-script' # removed from loaded as default cause of a weird npm error - add it manually (`npm install urequire-rc-iced-coffee-script` and then in your `bundle: resources: [ 'iced-coffee-script', ....]` :-)  </span></code></pre>
 <p>This is what the &#39;coco&#39; RC <a href="https://github.com/anodynos/urequire-rc-coco/blob/master/source/code/urequire-rc-coco.coffee">actually looks like</a>:</p>
-<p><code>[&#39;$coco&#39;, [ &#39;**/*.co&#39;], ((r)-&gt; require(&#39;coco&#39;).compile r.converted, @options), &#39;.js&#39;]</code>.</p>
+<p><code>[&#39;$coco&#39;, [ &#39;**/*.co&#39;], ((r) -&gt; require(&#39;coco&#39;).compile r.converted, @options), &#39;.js&#39;]</code>.</p>
 <p>As an example, if you wanted to pass some coco <code>options</code> (that <code>_.extend</code> default options), use this format instead of a plain <code>&#39;coco&#39;</code> String:</p>
 <pre><code>    [<span class="string">'coco'</span>, {bare: <span class="literal">false</span>}]
 ]</code></pre>
@@ -574,7 +596,7 @@ defaultResourceConverters.unshift wrapCoffeeDefineCommonJS =
     [ <span class="string">'**/*.coffee'</span> <span class="comment"># not working with .litcoffee</span>
       <span class="string">'**/*.co'</span>, <span class="string">'**/*.ls'</span>, <span class="string">'**.iced'</span> ]
 
-    (r)-&gt;
+    (r) -&gt;
       lines = r.converted.split <span class="string">'\n'</span>
       r.converted = <span class="string">'define -&gt;\n'</span>
       <span class="keyword">for</span> line <span class="keyword">in</span> lines <span class="keyword">when</span> line

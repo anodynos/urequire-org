@@ -103,7 +103,7 @@ block content
               ```
 
           .whyclear
-            pre.code.separator dependencies: exports: bundle: { 'lodash': '_', 'backbone': 'Backbone'}
+            pre.code.separator dependencies: imports: bundle: { 'lodash': '_', 'backbone': 'Backbone'}
 
           //.why
           :markdown
@@ -119,21 +119,21 @@ block content
             ({ urequire: { rootExports: '_B', noConflict: true }});
             module.exports = {...}
             ```
-            The [same in a config](masterdefaultsconfig.coffee#bundle.dependencies.exports.root) is
+            The [same in a config](masterdefaultsconfig.coffee#bundle.dependencies.rootExports) is
 
             ```js
-            dependencies: { exports: { root: { 'uberscore': '_B' }}}
+            dependencies: { imports: { root: { 'uberscore': '_B' }}}
             ```
 
-            How about [exporting to your bundle](masterdefaultsconfig.coffee#bundle.dependencies.exports.bundle) only?
+            How about [exporting to your bundle](masterdefaultsconfig.coffee#bundle.dependencies.imports.bundle) only?
             ```js
-            // export/inject `_` in (all) bundle's modules
-            dependencies: { exports: { bundle: { 'lodash': '_' }}}
+            // inject `lodash` as `_` in (all) bundle's modules
+            dependencies: { imports: { 'lodash': '_' }}
             ```
 
             Want to replace **deps with mocks** or **alternative versions** ?
 
-            [Inject](masterdefaultsconfig.coffee#bundle.dependencies.exports.bundle), [replace](MasterDefaultsConfig.coffee#bundle.dependencies.replace) or even [delete](resourceconverters.coffee#inject-replace-dependencies) dependencies with a simple declaration or a callback:
+            [Inject](masterdefaultsconfig.coffee#bundle.dependencies.imports.bundle), [replace](MasterDefaultsConfig.coffee#bundle.dependencies.replace) or even [delete](resourceconverters.coffee#inject-replace-dependencies) dependencies with a simple declaration or a callback:
             ```js
             // underscore is dead, long live _
             dependencies: { replace: { lodash: 'underscore'}}
@@ -204,9 +204,9 @@ block content
 
                 * [Allow `runtimeInfo`](masterdefaultsconfig.coffee#build.runtimeInfo) (eg `__isNode`, `__isAMD`) selectively
 
-                * [inject](masterdefaultsconfig.coffee#bundle.dependencies.exports.bundle) `lodash` dep in each module as `_`
+                * [inject](masterdefaultsconfig.coffee#bundle.dependencies.imports.bundle) `lodash` dep in each module as `_`
 
-                * [export a global](masterdefaultsconfig.coffee#bundle.dependencies.exports.root) `window._B` with a `noConflict()`
+                * [export a global](masterdefaultsconfig.coffee#bundle.dependencies.rootExports) `window._B` with a `noConflict()`
 
                 * [inject](resourceconverters.coffee#inject-any-string-before-after-body) `'var VERSION =...'` before body of `uberscore.js`
 
@@ -227,7 +227,7 @@ block content
                 filez: ['**/*', (f)-> f isnt 'badfile']
                 copy: [/./]
                 runtimeInfo: ['!**/*', 'Logger']
-                dependencies: exports:
+                dependencies: imports:
                   bundle: 'lodash':  '_'
                   root: 'uberscore': '_B'
                 resources: [
@@ -284,7 +284,7 @@ block content
 
               * [inject `'use strict;'`](masterdefaultsconfig.coffee#build.usestrict) on all/filtered modules or combined bundle's closure
 
-              * [inject `exports` & `module`](masterdefaultsconfig.coffee#build.injectexportsmodule) (along with `require`), so you never miss 'em & solve any [circular dependencies](http://stackoverflow.com/questions/4881059/how-to-handle-circular-dependencies-with-requirejs-amd) problems [with AMD](http://requirejs.org/docs/api.html#circular).
+              * [inject `imports` & `module`](masterdefaultsconfig.coffee#build.injectexportsmodule) (along with `require`), so you never miss 'em & solve any [circular dependencies](http://stackoverflow.com/questions/4881059/how-to-handle-circular-dependencies-with-requirejs-amd) problems [with AMD](http://requirejs.org/docs/api.html#circular).
 
               * and more :-)
 
