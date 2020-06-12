@@ -40,7 +40,7 @@ block content
 
                * **execution environment** (AMD *only* for Web, CommonJs *only* for nodejs)
 
-               * **capabilities, [dependency/path resolutions](/uRequire/docs/flexible-path-conventions), [plugins](requirejs-loader-plugins), [semantics](synchronous-require)** etc are a mess
+               * **capabilities, [dependency/path resolutions](uRequire/docs/flexible-path-conventions), [plugins](uRequire/docs/requirejs-loader-plugins), [semantics](uRequire/docs/synchronous-require)** etc are a mess
 
                * [UMD](https://github.com/umdjs/umd/) is a **semi-standard boilerplate**, far from usable.
 
@@ -55,24 +55,24 @@ block content
               * Convert from **any** format to **any** other:
                 * from **AMD** and **CommonJS**
 
-                * to [AMD](/uRequire/docs/amd-template), [CommonJS](/uRequire/docs/nodejs-template), [UMD](/uRequire/docs/umd-template), [Combined for nodejs-Web/AMD-Web/Script](/uRequire/docs/combined-template)
+                * to [AMD](uRequire/docs/amd-template), [CommonJS](uRequire/docs/nodejs-template), [UMD](uRequire/docs/umd-template), [Combined for nodejs-Web/AMD-Web/Script](uRequire/docs/combined-template)
 
                 * ~~ES6/Harmony~~ *when standard/parsers mature*
 
-              * Forget [the woes](/uRequire/docs/synchronous-require#never-miss-a-dependency) or Module formats incompatibilities
+              * Forget [the woes](uRequire/docs/synchronous-require#never-miss-a-dependency) or Module formats incompatibilities
 
-              * Eliminate boilerplate & *write modular Javascript code once, run everywhere* : [**Web/Script**, **Web/AMD**, **nodejs**](/uRequire/docs/deployment)
+              * Eliminate boilerplate & *write modular Javascript code once, run everywhere* : [**Web/Script**, **Web/AMD**, **nodejs**](uRequire/docs/deployment)
 
-              * A [Universal Module Format](/uRequire/docs/universal-module-format) with the **power, goodies & standards** from all.
+              * A [Universal Module Format](uRequire/docs/universal-module-format) with the **power, goodies & standards** from all.
 
-              * Convert to a single `combined.js`, that [runs everywhere & is super optimized](/uRequire/docs/combined-template)
+              * Convert to a single `combined.js`, that [runs everywhere & is super optimized](uRequire/docs/combined-template)
 
               ##### If U `require`d it or `define`d it, **uRequire will find it**.
 
 
           .why.right
             :markdown
-              Simplest [Module Authoring](/uRequire/docs/features#module-authoring)
+              Simplest [Module Authoring](uRequire/docs/features#module-authoring)
 
               ```js
               var dep1 = require('./rel/path/dep1'),
@@ -108,18 +108,18 @@ block content
           //.why
           :markdown
 
-            ## A [Modules & Dependencies aware](/uRequire/docs/masterdefaultsconfig.coffee#bundle.dependencies) builder.
+            ## A [Modules & Dependencies aware](uRequire/docs/masterdefaultsconfig.coffee#bundle.dependencies) builder.
 
-            [Exporting modules](/uRequire/docs/exporting-modules) to `window`/`global` variables (like `window._`, `window.$` etc), demystified and with no boilerplate.
+            [Exporting modules](uRequire/docs/exporting-modules) to `window`/`global` variables (like `window._`, `window.$` etc), demystified and with no boilerplate.
 
-            Want [`noConflict()`](/uRequire/docs/generated-noconflict-functionality), baked in? Its a simple declaration away.
+            Want [`noConflict()`](uRequire/docs/generated-noconflict-functionality), baked in? Its a simple declaration away.
 
             ```js
             // file `uberscore.js` - export it to root (`window`) as `_B`
             ({ urequire: { rootExports: '_B', noConflict: true }});
             module.exports = {...}
             ```
-            The [same in a config](/uRequire/docs/masterdefaultsconfig.coffee#bundle.dependencies.rootExports) is
+            The [same in a config](uRequire/docs/masterdefaultsconfig.coffee#bundle.dependencies.rootExports) is
 
             ```js
             dependencies: { imports: { root: { 'uberscore': '_B' }}}
@@ -133,7 +133,7 @@ block content
 
             Want to replace **deps with mocks** or **alternative versions** ?
 
-            [Inject](/uRequire/docs/masterdefaultsconfig.coffee#bundle.dependencies.imports.bundle), [replace](/uRequire/docs/MasterDefaultsConfig.coffee#bundle.dependencies.replace) or even [delete](/uRequire/docs/resourceconverters.coffee#inject-replace-dependencies) dependencies with a simple declaration or a callback:
+            [Inject](uRequire/docs/masterdefaultsconfig.coffee#bundle.dependencies.imports.bundle), [replace](uRequire/docs/MasterDefaultsConfig.coffee#bundle.dependencies.replace) or even [delete](uRequire/docs/resourceconverters.coffee#inject-replace-dependencies) dependencies with a simple declaration or a callback:
             ```js
             // underscore is dead, long live _
             dependencies: { replace: { lodash: 'underscore'}}
@@ -148,11 +148,11 @@ block content
 
           :markdown
 
-            ## A versatile [in-memory Resource Conversion](/uRequire/docs/resourceconverters.coffee#resourceconverter-workflow-principles)
+            ## A versatile [in-memory Resource Conversion](uRequire/docs/resourceconverters.coffee#resourceconverter-workflow-principles)
 
-            [Manipulate Module code](/uRequire/docs/resourceconverters.coffee#manipulating-modules) while building:
+            [Manipulate Module code](uRequire/docs/resourceconverters.coffee#manipulating-modules) while building:
 
-              * **inject, replace or delete** [code fragments or AST nodes](/uRequire/docs/resourceconverters.coffee#manipulate-replace-ast-code) or dependencies with one liners.
+              * **inject, replace or delete** [code fragments or AST nodes](uRequire/docs/resourceconverters.coffee#manipulate-replace-ast-code) or dependencies with one liners.
 
               ```
               // delete matching code of code skeleton
@@ -164,13 +164,13 @@ block content
 
             Perform **any code manipulation** - eg remove debug code, inject initializations etc
 
-              * [Inject code before (or after) each module's body](/uRequire/docs/resourceconverters.coffee#beforebody) eg. to initialize custom module code, for common module tasks:
+              * [Inject code before (or after) each module's body](uRequire/docs/resourceconverters.coffee#beforebody) eg. to initialize custom module code, for common module tasks:
               ```
               function(m) { m.beforeBody = "var l = new _B.Logger('" + m.dstFilename + "');"; }
 
               ```
 
-              * Inject [common](MasterDefaultsConfig.coffee#bundle.commoncode) or [merged](/uRequire/docs/resourceconverters.coffee#mergedcode) repeating statements: keep DRY, save space & speed when [`combined`](/uRequire/docs/combined-template) in a single `.js`
+              * Inject [common](MasterDefaultsConfig.coffee#bundle.commoncode) or [merged](uRequire/docs/resourceconverters.coffee#mergedcode) repeating statements: keep DRY, save space & speed when [`combined`](uRequire/docs/combined-template) in a single `.js`
 
               ```
               // each module will have before its main body, in all templates
@@ -179,7 +179,7 @@ block content
               // added before beforeBody for all templates except 'combined', where its merged
               function(m) { m.mergedCode = '"var p1 = myModule.p1, p2 = myModule.p2, ..., pN = myModule.pN;"' }
               ```
-            Who needs bloated plugins ?  Here's a [ResourceConverter](/uRequire/docs/resourceconverters.coffee#what-is-a-resourceconverter) for our [coco](https://github.com/satyr/coco) files (included along with [coffeescript](http://coffeescript.org), [LiveScript](http://livescript.net), [iced-coffee-script](http://maxtaco.github.io/coffee-script).
+            Who needs bloated plugins ?  Here's a [ResourceConverter](uRequire/docs/resourceconverters.coffee#what-is-a-resourceconverter) for our [coco](https://github.com/satyr/coco) files (included along with [coffeescript](http://coffeescript.org), [LiveScript](http://livescript.net), [iced-coffee-script](http://maxtaco.github.io/coffee-script).
 
               ```coffee
               [ '$coco', [ '**/*.co'], ((r)-> require('coco').compile r.converted), '.js']
@@ -194,27 +194,27 @@ block content
 
               This `'uberscore'` config (coffeescript) will:
 
-                * [read files from `source`](/uRequire/docs/masterdefaultsconfig.coffee#bundle.path), [write to `build`]((masterdefaultsconfig.coffee#build.dstPath)
+                * [read files from `source`](uRequire/docs/masterdefaultsconfig.coffee#bundle.path), [write to `build`]((masterdefaultsconfig.coffee#build.dstPath)
 
-                * [filter some `filez`](/uRequire/docs/masterdefaultsconfig.coffee#bundle.filez)
+                * [filter some `filez`](uRequire/docs/masterdefaultsconfig.coffee#bundle.filez)
 
-                * convert each module in `path` to [UMD (default)](/uRequire/docs/UMD-template)
+                * convert each module in `path` to [UMD (default)](uRequire/docs/UMD-template)
 
-                * [copy](/uRequire/docs/masterdefaultsconfig.coffee#bundle.copy) all other files there
+                * [copy](uRequire/docs/masterdefaultsconfig.coffee#bundle.copy) all other files there
 
-                * [Allow `runtimeInfo`](/uRequire/docs/masterdefaultsconfig.coffee#build.runtimeInfo) (eg `__isNode`, `__isAMD`) selectively
+                * [Allow `runtimeInfo`](uRequire/docs/masterdefaultsconfig.coffee#build.runtimeInfo) (eg `__isNode`, `__isAMD`) selectively
 
-                * [inject](/uRequire/docs/masterdefaultsconfig.coffee#bundle.dependencies.imports.bundle) `lodash` dep in each module as `_`
+                * [inject](uRequire/docs/masterdefaultsconfig.coffee#bundle.dependencies.imports.bundle) `lodash` dep in each module as `_`
 
-                * [export a global](/uRequire/docs/masterdefaultsconfig.coffee#bundle.dependencies.rootExports) `window._B` with a `noConflict()`
+                * [export a global](uRequire/docs/masterdefaultsconfig.coffee#bundle.dependencies.rootExports) `window._B` with a `noConflict()`
 
-                * [inject](/uRequire/docs/resourceconverters.coffee#inject-any-string-before-after-body) `'var VERSION =...'` before body of `uberscore.js`
+                * [inject](uRequire/docs/resourceconverters.coffee#inject-any-string-before-after-body) `'var VERSION =...'` before body of `uberscore.js`
 
-                * [minify](/uRequire/docs/masterdefaultsconfig.coffee#build.optimize) each module with UglifyJs2's defaults
+                * [minify](uRequire/docs/masterdefaultsconfig.coffee#build.optimize) each module with UglifyJs2's defaults
 
-                * [add a banner](/uRequire/docs/masterdefaultsconfig.coffee#build.template) (after UMD template & minification)
+                * [add a banner](uRequire/docs/masterdefaultsconfig.coffee#build.template) (after UMD template & minification)
 
-                * [watch for changes](/uRequire/docs/masterdefaultsconfig.coffee#build.watch), convert only [what's really changed](resourceconverters.coffee#watching-module-changes)
+                * [watch for changes](uRequire/docs/masterdefaultsconfig.coffee#build.watch), convert only [what's really changed](resourceconverters.coffee#watching-module-changes)
 
           .why.right
             :markdown
@@ -243,21 +243,21 @@ block content
 
           .why.right
             :markdown
-              ## Parent configs ? [Lets derive!](/uRequire/docs/types-and-derive#deriving-behaviors)
+              ## Parent configs ? [Lets derive!](uRequire/docs/types-and-derive#deriving-behaviors)
 
               The `'distribute'` config will:
 
-                * derive (i.e [deep inherit & modify](/uRequire/docs/types-and-derive#deeper-behavior)) the above
+                * derive (i.e [deep inherit & modify](uRequire/docs/types-and-derive#deeper-behavior)) the above
 
-                * filter some [more filez](/uRequire/docs/types-and-derive#arrayizeconcat)
+                * filter some [more filez](uRequire/docs/types-and-derive#arrayizeconcat)
 
-                * change template to ['combined'](/uRequire/docs/combined-template)
+                * change template to ['combined'](uRequire/docs/combined-template)
 
                 * output to a different filename
 
-                * pass [more options to uglify2 / r.js](/uRequire/docs/masterdefaultsconfig.coffee#build.optimize)
+                * pass [more options to uglify2 / r.js](uRequire/docs/masterdefaultsconfig.coffee#build.optimize)
 
-              See [more simple examples](/uRequire/docs/masterdefaultsconfig.coffee#examples) and a [detailed real project](https://github.com/anodynos/uBerscore/blob/master/Gruntfile.coffee)
+              See [more simple examples](uRequire/docs/masterdefaultsconfig.coffee#examples) and a [detailed real project](https://github.com/anodynos/uBerscore/blob/master/Gruntfile.coffee)
 
           .why.left
             :markdown
@@ -278,13 +278,13 @@ block content
             :markdown
               ## How about *declarative*, either **per module** or **whole bundle**:
 
-              * [have `window === global`](/uRequire/docs/masterdefaultsconfig.coffee#build.globalwindow), either in Browser or nodejs, at all times
+              * [have `window === global`](uRequire/docs/masterdefaultsconfig.coffee#build.globalwindow), either in Browser or nodejs, at all times
 
-              * [runtimeInfo](/uRequire/docs/masterdefaultsconfig.coffee#build.runtimeinfo) have `__isWeb`, `__isNode` & `__isAMD` always available
+              * [runtimeInfo](uRequire/docs/masterdefaultsconfig.coffee#build.runtimeinfo) have `__isWeb`, `__isNode` & `__isAMD` always available
 
-              * [inject `'use strict;'`](/uRequire/docs/masterdefaultsconfig.coffee#build.usestrict) on all/filtered modules or combined bundle's closure
+              * [inject `'use strict;'`](uRequire/docs/masterdefaultsconfig.coffee#build.usestrict) on all/filtered modules or combined bundle's closure
 
-              * [inject `imports` & `module`](/uRequire/docs/masterdefaultsconfig.coffee#build.injectexportsmodule) (along with `require`), so you never miss 'em & solve any [circular dependencies](http://stackoverflow.com/questions/4881059/how-to-handle-circular-dependencies-with-requirejs-amd) problems [with AMD](http://requirejs.org/docs/api.html#circular).
+              * [inject `imports` & `module`](uRequire/docs/masterdefaultsconfig.coffee#build.injectexportsmodule) (along with `require`), so you never miss 'em & solve any [circular dependencies](http://stackoverflow.com/questions/4881059/how-to-handle-circular-dependencies-with-requirejs-amd) problems [with AMD](http://requirejs.org/docs/api.html#circular).
 
               * and more :-)
 
