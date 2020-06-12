@@ -1,4 +1,4 @@
-# * urequire.org - based on http://gruntjs.com/
+# * http://anodynos.github.io/uRequire - based on http://gruntjs.com/
 module.exports = (grunt) ->
   fs = require "fs"
   exec = require("child_process").exec
@@ -52,6 +52,7 @@ module.exports = (grunt) ->
                 grunt.log.error e
                 grunt.fail.warn "Jade failed to compile."
 
+        grunt.log.ok('sidebars', JSON.stringify(sidebars, null, 2))
         grunt.log.ok "Created " + names.length + " files."
 
 
@@ -76,7 +77,7 @@ module.exports = (grunt) ->
           else rMode = false  if line.substring(0, 2) is "##"
           if rMode and line.length > 0
             item = line.replace(/#/g, "").replace("]]", "").replace("* [[", "")
-            url = """uRequire/docs/#{item}.html"""
+            url = """uRequire/docs/#{item.toLowerCase()}.html"""
             if item[0] is " "
 
               # TODO: clean this up...
@@ -92,7 +93,7 @@ module.exports = (grunt) ->
                 name: item
                 url: url.replace(RegExp(" ", "g"), "-")
                   .replace(/\`/g, "")
-                  .toLowerCase()
+                  # .toLowerCase() # it breaks the links
 
         items
 
