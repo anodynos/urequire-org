@@ -33,6 +33,6 @@
     "lodash": "1.2.x",
     "marked": "https://github.com/vladikoff/marked/tarball/master",
     "q": "~0.9.3",
-    "request": "~2.16.6"
+    "request": "~2.88.2"
   }
 }
