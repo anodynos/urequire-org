@@ -76,7 +76,7 @@ module.exports = (grunt) ->
           else rMode = false  if line.substring(0, 2) is "##"
           if rMode and line.length > 0
             item = line.replace(/#/g, "").replace("]]", "").replace("* [[", "")
-            url = item
+            url = """docs/#{item}.html"""
             if item[0] is " "
 
               # TODO: clean this up...
