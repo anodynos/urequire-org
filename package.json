@@ -30,7 +30,7 @@
     "grunt-shell": "0.2.2",
     "highlight.js": "~7.3.0",
     "jade": "~0.29.x",
-    "lodash": "1.2.x",
+    "lodash": "4.17.x",
     "marked": "https://github.com/vladikoff/marked/tarball/master",
     "q": "~0.9.3",
     "request": "~2.16.6"
